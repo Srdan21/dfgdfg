@@ -60,7 +60,7 @@ export let phone = {
                 text: text,
                 datetime: weather.getRpDateTime(),
             })
-            player.notify("~g~Отправлено~s~\nСМС была отправлена получателю");
+            player.notify("~g~Sent~s~~nSMS has been sent to the recipient");
         } catch(e) {
             methods.debug(e);
         }
@@ -118,13 +118,13 @@ export let phone = {
         if (!user.isLogin(player))
             return;
         try {
-            if(title.length >= 50) return player.notify(`~r~Длинна имени контакта не более 50`)
+            if(title.length >= 50) return player.notify(`~r~Contact name length max. 50`)
             phoneContactEntity.create({
                 number: phone,
                 title: title,
                 text_number: num
             })
-            player.notify("~g~Контакт был добавлен");
+            player.notify("~g~A contact has been added");
         } catch(e) {
             methods.debug(e);
         }
@@ -140,7 +140,7 @@ export let phone = {
         if (!user.isLogin(player))
             return;
         try {
-            player.notify("~g~Контакт был удален");
+            player.notify("~g~The contact has been deleted");
         } catch(e) {
             methods.debug(e);
         }
@@ -156,7 +156,7 @@ export let phone = {
         if (!user.isLogin(player))
             return;
         try {
-            player.notify("~g~Контакт был переименован");
+            player.notify("~g~The contact has been renamed");
         } catch(e) {
             methods.debug(e);
         }
@@ -216,7 +216,7 @@ export let phone = {
         if (!user.isLogin(player))
             return;
         try {
-            player.notify("~g~Смс была удалена");
+            player.notify("~g~The text message has been deleted");
         } catch(e) {
             methods.debug(e);
         }
