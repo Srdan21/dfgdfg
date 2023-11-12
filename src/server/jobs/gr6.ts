@@ -89,7 +89,7 @@ let markers = [
   [318.2640, -1076.7376, 28.4785,85]
 ]
 
-mp.labels.new("База инкассаторов", new mp.Vector3(gr6basePosition.x, gr6basePosition.y, gr6basePosition.z+1.2), {
+mp.labels.new("Collector base", new mp.Vector3(gr6basePosition.x, gr6basePosition.y, gr6basePosition.z+1.2), {
   dimension: 0,
   drawDistance: 10,
   los: true,
@@ -142,7 +142,7 @@ function startJob(player:PlayerMp){
     user.setComponentVariation(player, 11, 26, 1);
   }
   player.gr6duty = true;
-  player.notify("Вы заступили на смену")
+  player.notify("You've come on duty")
   if(player.armour < 20) player.armour = 20;
   user.giveWeaponByHash(player, mp.joaat('WEAPON_PISTOL'), 100);
   user.set(player, "is6Duty", true)
@@ -154,7 +154,7 @@ mp.events.add("gr6:fakeCar", (player:PlayerMp) => {
 })
 
 function stopJob(player:PlayerMp){
-  player.notify("Вы завершили рабочий день");
+  player.notify("You've completed your day's work");
   player.call("server:gr6:stop")
   if(player.armour <= 20) player.armour = 0;
   player.gr6duty = false;
@@ -176,20 +176,20 @@ function despawnVeh(veh:VehicleMp, del = true){
   return true;
 }
 
-methods.createDynamicCheckpoint(gr6basePosition, "Нажмите ~g~Е~s~ чтобы открыть меню инкассаторов", (player) => {
-  if(!enabledSystem.gr6) return player.notify("Лицензионный центр на временных тех работах. Загляните чуть позже")
-  let m = menu.new(player, "", 'Инкассаторы');
+methods.createDynamicCheckpoint(gr6basePosition, "Press ~g~E~s~ to open the collectors menu", (player) => {
+  if(!enabledSystem.gr6) return player.notify("Licence centre on temporary maintenance. Check back later.")
+  let m = menu.new(player, "", 'Collectors');
   m.sprite = "gr6"
   if(!player.gr6duty){
     m.newItem({
-      name: "Начать рабочий день",
+      name: "Start the day",
       more: gr6JobCost+"$",
       onpress: () => {
-        if(user.getLevel(player) < levelAccess.gr6) return player.notify("~r~Необходимо иметь "+levelAccess.gr6+" уровень")
-        if(user.get(player, "job") != "gr6") return player.notify("Вы не работаете инкассатором");
-        if(user.isGos(player)) return player.notify("Гос служащим запрещено работать инкассаторами");
-        if(user.get(player, "gun_lic") != 1) return player.notify("У вас нет лицензии на оружие");
-        if(user.getCashMoney(player) < gr6JobCost) return player.notify("У вас недостаточно средств для выхода на смену")
+        if(user.getLevel(player) < levelAccess.gr6) return player.notify("~r~It is necessary to have "+levelAccess.gr6+" level")
+        if(user.get(player, "job") != "gr6") return player.notify("You don't work as a collector");
+        if(user.isGos(player)) return player.notify("Civil servants are prohibited from working as cash collectors");
+        if(user.get(player, "gun_lic") != 1) return player.notify("You don't have a gun licence");
+        if(user.getCashMoney(player) < gr6JobCost) return player.notify("You do not have sufficient funds to go on shift")
         user.removeMoney(player, gr6JobCost)
         startJob(player)
         m.close();
@@ -197,7 +197,7 @@ methods.createDynamicCheckpoint(gr6basePosition, "Нажмите ~g~Е~s~ что
     })
   } else {
     m.newItem({
-      name: "Закончить смену",
+      name: "End of shift",
       onpress: () => {
         stopJob(player)
         m.close();
@@ -211,13 +211,13 @@ methods.createDynamicCheckpoint(gr6basePosition, "Нажмите ~g~Е~s~ что
         name: "~y~Вернуть транспорт",
         more: "+"+(gr6CarCost-500)+"$",
         onpress: () => {
-          if(!player.gr6Veh) return player.notify("У вас нет арендованного ТС")
-          if(!mp.vehicles.exists(player.gr6Veh)) return player.notify("ТС уничтожен"), player.gr6Veh = null;
-          if(player.gr6Veh.dist(gr6basePosition) > gr6baseDistance) return player.notify("ТС слишком далеко от базы");
+          if(!player.gr6Veh) return player.notify("You don't have a leased vehicle")
+          if(!mp.vehicles.exists(player.gr6Veh)) return player.notify("The vehicle is destroyed"), player.gr6Veh = null;
+          if(player.gr6Veh.dist(gr6basePosition) > gr6baseDistance) return player.notify("TC is too far off base");
           despawnVeh(player.gr6Veh);
           player.gr6Veh = null;
           user.addCashMoney(player, (gr6CarCost-500))
-          player.notify("Вы вернули залог за ТС")
+          player.notify("You returned the deposit for the vehicle")
           m.close();
         }
       })
@@ -228,8 +228,8 @@ methods.createDynamicCheckpoint(gr6basePosition, "Нажмите ~g~Е~s~ что
 
   if(player.gr6TaskVeh || player.gr6haveTask){
     m.newItem({
-      name: "~r~Завершить текущий наряд",
-      desc: "Завершить текущее задание и открепится от экипажа",
+      name: "~r~Complete the current job order",
+      desc: "Complete the current mission and disengage from the crew",
       onpress: () => {
         removeTask(player)
       }
@@ -237,19 +237,19 @@ methods.createDynamicCheckpoint(gr6basePosition, "Нажмите ~g~Е~s~ что
   }
 
   m.newItem({
-    name: "Арендовать служебный транспорт",
+    name: "Rent a company vehicle",
     more: gr6CarCost+"$",
     onpress: async () => {
-      if(user.getLevel(player) < levelAccess.gr6) return player.notify("~r~Необходимо иметь "+levelAccess.gr6+" уровень")
-      if(user.get(player, "c_lic") != 1) return player.notify("Необходимо удостоверение категории C")
+      if(user.getLevel(player) < levelAccess.gr6) return player.notify("~r~It is necessary to have "+levelAccess.gr6+" level")
+      if(user.get(player, "c_lic") != 1) return player.notify("A category C licence is required")
       if(!player.gr6duty) return player.notify("Вы не на смене")
-      if(user.getCashMoney(player) < gr6CarCost) return player.notify("У вас недостаточно средств для аренды ТС")
+      if(user.getCashMoney(player) < gr6CarCost) return player.notify("You do not have enough money to rent a vehicle")
       m.close();
       let pos = findFreePlace();
       if(!pos) return player.notify("На парковке не найдено свободное место");
       if(player.gr6Veh){
-        let status = await user.accept(player, "Старое ТС будет потеряно");
-        if(!status) return player.notify("В таком случае вам необходимо его вернуть")
+        let status = await user.accept(player, "The old TC will be lost");
+        if(!status) return player.notify("In that case, you need to return it")
         if(player.gr6Veh.dist(gr6basePosition) <= gr6baseDistance) despawnVeh(player.gr6Veh), player.gr6Veh = null;
         else despawnVeh(player.gr6Veh, false)
       }
@@ -278,15 +278,15 @@ methods.createDynamicCheckpoint(gr6basePosition, "Нажмите ~g~Е~s~ что
     }
   })
   m.newItem({
-    name: "Вооружение",
+    name: "Armament",
     more: gr6AmmoCost+"$",
     onpress: () => {
-      if(!player.gr6duty) return player.notify("Вы не на смене")
-      if(user.getCashMoney(player) < gr6AmmoCost) return player.notify("У вас недостаточно средств для покупки")
+      if(!player.gr6duty) return player.notify("You're not on shift")
+      if(user.getCashMoney(player) < gr6AmmoCost) return player.notify("You do not have sufficient funds for the purchase")
       user.removeMoney(player, gr6AmmoCost)
       //user.giveWeaponByHash(player, 'WEAPON_SMG', 200);
       user.giveWeaponByHash(player, mp.joaat('WEAPON_SMG'), 200);
-      player.notify("Вы получили MP5 и комплект брони")
+      player.notify("You received an MP5 and a set of armour")
       player.armour = 35;
       m.close();
     }
@@ -297,24 +297,24 @@ methods.createDynamicCheckpoint(gr6basePosition, "Нажмите ~g~Е~s~ что
 
 function checkVehStatus(player:PlayerMp){
   if(!player.gr6duty){
-    player.notify("Вы не на смене");
+    player.notify("You're not on shift");
     return false;
   }
   if(!player.gr6Veh){
-    player.notify("У вас нет арендованого ТС");
+    player.notify("You don't have a leased vehicle");
     return false;
   }
   if(!player.vehicle){
-    player.notify("Вы не в ТС");
+    player.notify("You're not in CU.");
     return false;
   }
   if(!mp.vehicles.exists(player.gr6Veh)){
-    player.notify("ТС уничтожен");
+    player.notify("The vehicle is destroyed");
     player.gr6Veh = null;
     return false;
   }
   if(player.vehicle != player.gr6Veh){
-    player.notify("Вы не в своём ТС");
+    player.notify("You're not in your TC");
     return false;
   }
 
@@ -327,17 +327,17 @@ function checkVehUsers(veh:VehicleMp){
   if(veh.gr6users.length == 0) return;
   veh.gr6users.forEach((target, index) => {
     if(!mp.players.exists(target)) veh.gr6users.splice(index, 1);
-    if(!target.gr6duty) veh.gr6users.splice(index, 1), target.notify("Вы были исключены из напарников после окончания смены"), removeTask(target);
+    if(!target.gr6duty) veh.gr6users.splice(index, 1), target.notify("You were removed from your partners after the end of your shift."), removeTask(target);
   })
 }
 
 function removeTask(player:PlayerMp){
   if(!mp.players.exists(player)) return;
-  if(player.gr6haveTask) player.notify("Задание было отменено")
+  if(player.gr6haveTask) player.notify("The assignment was cancelled")
   player.gr6Task = null;
   player.gr6haveTask = false;
   if(mp.vehicles.exists(player.gr6TaskVeh)){
-    if(player.gr6TaskVeh.gr6users.indexOf(player) > -1)player.gr6TaskVeh.gr6users.splice(player.gr6TaskVeh.gr6users.indexOf(player), 1), player.notify("Вы были откреплены от экипажа")
+    if(player.gr6TaskVeh.gr6users.indexOf(player) > -1)player.gr6TaskVeh.gr6users.splice(player.gr6TaskVeh.gr6users.indexOf(player), 1), player.notify("You've been separated from the crew")
   }
   player.gr6TaskVeh = null;
   player.call("server:gr6:removeTask")
@@ -354,10 +354,10 @@ function userChoice(player:PlayerMp, target:PlayerMp){
     onpress: () => {
       if(!checkVehStatus(player)) return;
       checkVehUsers(veh)
-      user.accept(player, "Вы уверены?").then(status => {
+      user.accept(player, "Are you sure?").then(status => {
         if(status){
-          if(mp.players.exists(target)) veh.gr6users.splice(veh.gr6users.indexOf(target), 1), target.notify("Водитель исключил Вас"), target.removeFromVehicle(), removeTask(target);
-          player.notify("Напарник исключён");
+          if(mp.players.exists(target)) veh.gr6users.splice(veh.gr6users.indexOf(target), 1), target.notify("The driver expelled you"), target.removeFromVehicle(), removeTask(target);
+          player.notify("Partner excluded.");
         }
         usersVehList(player)
       })
@@ -366,16 +366,16 @@ function userChoice(player:PlayerMp, target:PlayerMp){
   if (target.gr6haveTask && target.gr6Task){
     let dist = methods.parseInt(veh.dist(new mp.Vector3(target.gr6Task.x, target.gr6Task.y, target.gr6Task.z)));
     m.newItem({
-      name: "Навигатор задания",
+      name: "Job navigator",
       more: dist+"m ("+methods.parseInt(dist*100/distCeil)+"$)",
       onpress: () => {
         if(!checkVehStatus(player)) return;
         checkVehUsers(veh)
-        if (!target.gr6haveTask || !target.gr6Task) return player.notify('~r~Задание более недоступно')
+        if (!target.gr6haveTask || !target.gr6Task) return player.notify('~r~The assignment is no longer available')
         user.setWaypoint(player, target.gr6Task.x, target.gr6Task.y)
-        player.notify("Навигатор запущен")
+        player.notify("Navigator is up and running")
         veh.gr6users.forEach(ntr => {
-          if(ntr != player) ntr.notify(user.getRpName(player)+" установил маршрут на точку "+user.getRpName(target)), ntr.notify(`Дистанция: ${dist}m, Сумма: ${methods.parseInt(dist*100/distCeil)}$`), user.setWaypoint(ntr, target.gr6Task.x, target.gr6Task.y);
+          if(ntr != player) ntr.notify(user.getRpName(player)+" set up a route to the point "+user.getRpName(target)), ntr.notify(`Distance: ${dist}m, Amount: ${methods.parseInt(dist*100/distCeil)}$`), user.setWaypoint(ntr, target.gr6Task.x, target.gr6Task.y);
         })
       }
     })
@@ -387,29 +387,29 @@ function usersVehList(player:PlayerMp){
   if(!checkVehStatus(player)) return;
   let veh = player.gr6Veh;
   checkVehUsers(veh)
-  let m = menu.new(player, "Напарники")
+  let m = menu.new(player, "Partners")
   m.onclose = () => {
     carMenu(player);
   }
   m.newItem({
-    name: "Новый напарник",
+    name: "New partner",
     onpress: async () => {
       if(!checkVehStatus(player)) return;
-      let id = methods.parseInt(await menu.input(player, "Введите ID напарника"));
-      if(isNaN(id) || id < 1) return player.notify("ID указан не верно");
+      let id = methods.parseInt(await menu.input(player, "Enter your partner's ID"));
+      if(isNaN(id) || id < 1) return player.notify("ID is not correct");
       checkVehUsers(veh)
       let target = user.getPlayerById(id);
-      if(!target) return player.notify("ID не обнаружен");
-      if(target.vehicle != player.gr6Veh) return player.notify("Напарник должен находится в вашем ТС");
-      if(!target.gr6duty) return player.notify("Указанный ID не на смене");
-      if(target.gr6haveTask) return player.notify("Сотрудник уже на задании");
-      if(target.gr6TaskVeh == veh) return player.notify("Сотрудник уже является напарником");
-      if(target.gr6TaskVeh) return player.notify("Сотрудник уже закреплён за другим ТС");
-      if(veh.gr6users.length >= 4) return player.notify("Лимит напарников превышен");
+      if(!target) return player.notify("ID not detected");
+      if(target.vehicle != player.gr6Veh) return player.notify("The partner must be in your TC");
+      if(!target.gr6duty) return player.notify("The specified ID is not on changeover");
+      if(target.gr6haveTask) return player.notify("A staff member is already on assignment");
+      if(target.gr6TaskVeh == veh) return player.notify("The staff member is already a partner");
+      if(target.gr6TaskVeh) return player.notify("The employee is already assigned to another vehicle");
+      if(veh.gr6users.length >= 4) return player.notify("The partner limit has been exceeded");
       veh.gr6users.push(target);
       target.gr6TaskVeh = veh;
-      target.notify("Вы стали напарником "+user.getRpName(player))
-      player.notify(user.getRpName(target)+ " стал вашим напарником")
+      target.notify("You've become a partner "+user.getRpName(player))
+      player.notify(user.getRpName(target)+ " has become your partner")
       usersVehList(player)
     }
   })
@@ -417,9 +417,9 @@ function usersVehList(player:PlayerMp){
     let dist = target.gr6haveTask ? methods.parseInt(veh.dist(new mp.Vector3(target.gr6Task.x, target.gr6Task.y, target.gr6Task.z))) : 0;
     m.newItem({
       name: user.getRpName(target),
-      more: target == player ? "Водитель (Вы)" : "Напарник"+(target.gr6haveTask ? " ("+dist+"m ("+methods.parseInt(dist*100/distCeil)+"$))" : "(нет задания)"),
+      more: target == player ? "Driver (You)" : "Partner"+(target.gr6haveTask ? " ("+dist+"m ("+methods.parseInt(dist*100/distCeil)+"$))" : "(no assignment)"),
       onpress: async () => {
-        if(target == player) return player.notify("С собой вы не можете ничего делать");
+        if(target == player) return player.notify("You can't do anything with yourself");
         userChoice(player, target)
       }
     })
@@ -429,13 +429,13 @@ function usersVehList(player:PlayerMp){
     onpress: async () => {
       if(!checkVehStatus(player)) return;
       checkVehUsers(veh)
-      user.accept(player, "Вы уверены?").then(status => {
+      user.accept(player, "Are you sure?").then(status => {
         if(status){
           veh.gr6users.forEach((usr) => {
             if(usr != player) removeTask(usr)
           })
           veh.gr6users = [player];
-          player.notify("Вы всех распустили");
+          player.notify("You've disbanded everyone");
         }
         usersVehList(player)
       })
@@ -462,66 +462,66 @@ function carMenu(player:PlayerMp){
     player.gr6TaskVeh = veh;
   }
   if(!checkVehStatus(player)) return;
-  let m = menu.new(player, "Инкассатор");
+  let m = menu.new(player, "Collector");
   let veh = player.gr6Veh;
   m.newItem({
-    name: "Напарники",
+    name: "Partners",
     onpress: () => {
       if(!checkVehStatus(player)) return;
       usersVehList(player);
     }
   })
   m.newItem({
-    name: "Получить задания",
+    name: "Get assignments",
     onpress: () => {
       if(!checkVehStatus(player)) return;
       checkVehUsers(veh);
       let newTask = false;
-      if(veh.gr6users.length == 1) return player.notify("У вас нет напарников, необходимо добавить"), usersVehList(player);
-      if(veh.position.z < 0) return player.notify("Из данного места нельзя брать заказы");
-      if(veh.gr6money > 3500000) return player.notify("У вас в машине более 3.5млн$, больше не влезает"), user.setWaypoint(player, gr6basePosition.x, gr6basePosition.y), player.notify("Построен маршрут до базы");
+      if(veh.gr6users.length == 1) return player.notify("You don't have partners, you need to add"), usersVehList(player);
+      if(veh.position.z < 0) return player.notify("You can't take orders from this location");
+      if(veh.gr6money > 3500000) return player.notify("You've got over $3.5 million in your car, you can't fit any more than that."), user.setWaypoint(player, gr6basePosition.x, gr6basePosition.y), player.notify("A route to the base has been constructed");
       veh.gr6users.forEach(target => {
         if(target != player){
-          if(target.vehicle != veh) target.notify("Вы не получили задание, потому что не были в ТС")
-          else if(target.gr6haveTask) target.notify("Вы не получили задание, у вас уже есть задание")
+          if(target.vehicle != veh) target.notify("You didn't get the assignment because you weren't in the CU")
+          else if(target.gr6haveTask) target.notify("You don't have an assignment, you already have an assignment")
           else {
             let pos = randomArrayEl(markers);
             if(!pos && methods.parseInt(veh.dist(new mp.Vector3(pos[0], pos[1], pos[2]))) < 20){
-              target.notify("Для вас не было найдено подходящего задания");
+              target.notify("No suitable assignment was found for you");
             } else {
               const [x,y,z] = pos;
               target.call('client:createGr6Checkpoint', [x, y, z]);
-              target.notify("Вы получили задание");
+              target.notify("You've been given an assignment");
               target.gr6Task = {
                 x,y,z,dist:methods.parseInt(veh.dist(new mp.Vector3(x,y,z)))
               };
               target.gr6haveTask = true;
-              player.notify(user.getRpName(target)+" получил задание ("+target.gr6Task.dist+"m)");
+              player.notify(user.getRpName(target)+" got the assignment ("+target.gr6Task.dist+"m)");
               newTask = true;
             }
           }
         }
       })
-      if(newTask) player.notify("Вы получили новые задания."), player.notify("В списке напарников выберите маршрут"), usersVehList(player);
-      else player.notify("Новых заданий нет");
+      if(newTask) player.notify("You have new assignments."), player.notify("From the list of partners, select a route"), usersVehList(player);
+      else player.notify("There are no new assignments");
     }
   })
   m.newItem({
-    name: "Отгрузить выручку",
+    name: "Ship the proceeds",
     more: veh.gr6money+"$",
     onpress: () => {
       if(!checkVehStatus(player)) return;
       m.close();
       checkVehUsers(veh)
-      if(veh.dist(gr6basePosition) > gr6baseDistance) return player.notify("ТС слишком далеко от базы"), user.setWaypoint(player, gr6basePosition.x, gr6basePosition.y);
-      if(veh.gr6money == 0) return player.notify("В ТС нет выручки");
+      if(veh.dist(gr6basePosition) > gr6baseDistance) return player.notify("TC is too far off base"), user.setWaypoint(player, gr6basePosition.x, gr6basePosition.y);
+      if(veh.gr6money == 0) return player.notify("There's no revenue in the CU");
 
       let money = methods.parseInt(veh.gr6money / 50 / veh.gr6users.length);
       veh.gr6users.forEach(target => {
         if(mp.players.exists(target)){
           let resMoney = user.get(target, 'skill_gr6') >= 500 ? (money*2) : money;
           user.addCashMoney(target, resMoney);
-          target.notify("Ваша выручка: "+resMoney+"$"+(user.get(target, 'skill_gr6') >= 500 ? " (+20%)": ""));
+          target.notify("Your proceeds: "+resMoney+"$"+(user.get(target, 'skill_gr6') >= 500 ? " (+20%)": ""));
           user.giveJobSkill(target);
           user.giveJobSkill(player);
           business.addMoney(162, methods.parseInt(resMoney / 10));
@@ -532,8 +532,8 @@ function carMenu(player:PlayerMp){
     }
   })
   m.newItem({
-    name: "Справка",
-    desc: "Катайтесь по заданиям, собирайте деньги с магазинов и везите их в хранилище. Есть возможность работать с напарником, до 4 человек."
+    name: "Reference",
+    desc: "Ride on tasks, collect money from shops and take them to the vault. It is possible to work with a partner, up to 4 people."
   })
 
   m.open()
@@ -561,20 +561,20 @@ mp.events.add("server:login:success:after", (player:PlayerMp) => {
 mp.events.addRemoteCounted('server:gr6:dropCar', (player:PlayerMp, vId:number) => {
   if (!user.isLogin(player)) return;
   vId = methods.parseInt(vId);
-  if(isNaN(vId) || vId < 0) return player.notify("Какой то странный ТС");
+  if(isNaN(vId) || vId < 0) return player.notify("That's a strange TC.");
   let veh = mp.vehicles.at(vId);
   if(!veh) return;
   checkVehUsers(veh);
   if(veh.gr6users){
-    if(veh.gr6users.indexOf(player) == -1) return player.notify("Это не ваш ТС");
+    if(veh.gr6users.indexOf(player) == -1) return player.notify("It's not your TC.");
     let money = methods.parseInt(player.gr6Task.dist * 100 / distCeil);
     if(money > (2200 * 100)) money = (2200 * 100);
     veh.gr6money += money;
     veh.gr6users.forEach(target => {
-      target.notify(user.getRpName(player)+" загрузил "+money+"$");
+      target.notify(user.getRpName(player)+" uploaded "+money+"$");
     })
   } else {
-    player.notify("Это не служебный транспорт")
+    player.notify("It's not a company vehicle")
   }
   player.gr6haveTask = false
   player.gr6Task = null;
@@ -587,13 +587,13 @@ mp.events.addRemoteCounted('gr6:menuVeh', (player:PlayerMp) => {
 
 mp.events.addRemoteCounted('server:gr6:grab', (player) => {
   if (!user.isLogin(player)) return;
-  if(!player.vehicle) return player.notify("Вы должны быть в ТС");
+  if(!player.vehicle) return player.notify("You must be in the CU");
   let veh = player.vehicle;
-  if (veh.getVariable('job') != 'gr6') return player.notify("ТС не принадлежит инкассаторам");
-  if(!veh.gr6users) return player.notify("ТС не принадлежит инкассаторам");
-  if(veh.gr6users.indexOf(player) != -1) return player.notify("Самих себя грабить задумали?");
+  if (veh.getVariable('job') != 'gr6') return player.notify("The vehicle does not belong to the collectors");
+  if(!veh.gr6users) return player.notify("The vehicle does not belong to the collectors");
+  if(veh.gr6users.indexOf(player) != -1) return player.notify("Are you robbing yourselves?");
   user.showLoadDisplay(player);
-  if(veh.gr6money == 0) return player.notify("~r~В машине нет денег");
+  if(veh.gr6money == 0) return player.notify("~r~There's no money in the car");
   const money = methods.parseInt(veh.gr6money / 60);
   veh.gr6money = 0;
   if(!mp.vehicles.exists(veh)) return;
@@ -602,6 +602,6 @@ mp.events.addRemoteCounted('server:gr6:grab', (player) => {
     if (!user.isLogin(player)) return;
     user.hideLoadDisplay(player);
     user.addCashMoney(player, money);
-    player.notify('~b~Вы ограбили транспорт на сумму: ~s~$' + methods.numberFormat(money));
+    player.notify('~b~You have robbed the transport of a sum of money: ~s~$' + methods.numberFormat(money));
   }, 1500);
 });
