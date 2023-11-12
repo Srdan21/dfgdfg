@@ -22,7 +22,7 @@ export const user = {
     check: () => {
         fetch('/mobile/checktoken?login=' + user.data.login + "&token=" + user.data.passToken).then(datas => {
             datas.json().then(data => {
-                if (!data.err) return user.setPath('/main'), user.notify("Успешная авторизация", "success");
+                if (!data.err) return user.setPath('/main'), user.notify("Successful authorisation", "success");
                 user.data = {
                     login: "",
                     passToken: 0,
@@ -65,7 +65,7 @@ export const user = {
         return new Promise((resolve, reject) => {
             fetch('/mobile/setx?login=' + user.data.login + "&token=" + user.data.passToken+'&name='+name+"&value="+Number(value)).then(datas => {
                 datas.json().then(data => {
-                    if (!data.err) return resolve(true), user.notify('Успешно')
+                    if (!data.err) return resolve(true), user.notify('Successfully')
                     else user.notify(data.err, "error")
                     user.data = {
                         login: "",
@@ -90,7 +90,7 @@ export const user = {
         return new Promise((resolve, reject) => {
             fetch('/mobile/blacklist?login=' + user.data.login + "&token=" + user.data.passToken + '&name=' + name + "&id=" + id + "&reason=" + reason).then(datas => {
                 datas.json().then(data => {
-                    if (!data.err) return resolve(true), user.notify('Успешно')
+                    if (!data.err) return resolve(true), user.notify('Successfully')
                     else user.notify(data.err, "error")
                 })
             })
@@ -100,7 +100,7 @@ export const user = {
         return new Promise((resolve, reject) => {
             fetch('/mobile/whitelist?login=' + user.data.login + "&token=" + user.data.passToken + '&name=' + name + "&social=" + id).then(datas => {
                 datas.json().then(data => {
-                    if (!data.err) return resolve(true), user.notify('Успешно')
+                    if (!data.err) return resolve(true), user.notify('Successfully')
                     else user.notify(data.err, "error")
                 })
             })
@@ -111,7 +111,7 @@ export const user = {
             fetch('/mobile/blackListRM?login=' + user.data.login + "&token=" + user.data.passToken + '&name=' + name + "&id=" + id).then(datas => {
                 datas.json().then(data => {
                     console.log(data)
-                    if (!data.err) return resolve(true), user.notify('Успешно')
+                    if (!data.err) return resolve(true), user.notify('Successfully')
                     else user.notify(data.err, "error")
                 })
             })
@@ -121,7 +121,7 @@ export const user = {
         return new Promise((resolve, reject) => {
             fetch('/mobile/kickUser?login=' + user.data.login + "&token=" + user.data.passToken + '&name=' + name + "&id=" + id).then(datas => {
                 datas.json().then(data => {
-                    if (!data.err) return resolve(true), user.notify('Успешно')
+                    if (!data.err) return resolve(true), user.notify('Successfully')
                     else user.notify(data.err, "error")
                 })
             })
@@ -131,7 +131,7 @@ export const user = {
         return new Promise((resolve, reject) => {
             fetch('/mobile/addMoney?login=' + user.data.login + "&token=" + user.data.passToken + '&name=' + name + "&id=" + id + "&sum=" + sum).then(datas => {
                 datas.json().then(data => {
-                    if (!data.err) return resolve(true), user.notify('Успешно')
+                    if (!data.err) return resolve(true), user.notify('Successfully')
                     else user.notify(data.err, "error")
                 })
             })
@@ -141,7 +141,7 @@ export const user = {
         return new Promise((resolve, reject) => {
             fetch('/mobile/removeMoney?login=' + user.data.login + "&token=" + user.data.passToken + '&name=' + name + "&id=" + id + "&sum=" + sum).then(datas => {
                 datas.json().then(data => {
-                    if (!data.err) return resolve(true), user.notify('Успешно')
+                    if (!data.err) return resolve(true), user.notify('Successfully')
                     else user.notify(data.err, "error")
                 })
             })
@@ -151,7 +151,7 @@ export const user = {
         return new Promise((resolve, reject) => {
             fetch('/mobile/promocodes?login=' + user.data.login + "&token=" + user.data.passToken + '&promo=' + promo).then(datas => {
                 datas.json().then(data => {
-                    if (!data.err) return resolve(data.ok), user.notify('Количество активаций [' + promo + ']: ' + data.ok)
+                    if (!data.err) return resolve(data.ok), user.notify('Number of activations [' + promo + ']: ' + data.ok)
                     else user.notify(data.err, "error")
                 })
             })
@@ -171,7 +171,7 @@ export const user = {
         return new Promise((resolve, reject) => {
             fetch('/mobile/reboot?login=' + user.data.login + "&token=" + user.data.passToken + '&name=' + name + "&min=" + min + "&reason=" + reason).then(datas => {
                 datas.json().then(data => {
-                    if (!data.err) return resolve(true), user.notify('Успешно')
+                    if (!data.err) return resolve(true), user.notify('Successfully')
                     else user.notify(data.err, "error")
                 })
             })
