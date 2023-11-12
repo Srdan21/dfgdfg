@@ -10,8 +10,8 @@ export class Auth extends Component<any, any> {
         return <div className="content">
             <div className="sidenav">
                 <div className="login-main-text">
-                    <h2>Админ панель<br /> Авторизация</h2>
-                    <p>Необходимо ввести данные от учётной записи</p>
+                    <h2>admin panel<br /> Authorisation</h2>
+                    <p>Account details must be entered</p>
                 </div>
             </div>
             <div className="main">
@@ -19,17 +19,17 @@ export class Auth extends Component<any, any> {
                     <div className="login-form">
                         <form>
                             <div className="form-group">
-                                <label>RP Имя учётной записи</label>
+                                <label>RP Account Name</label>
                                 <input type="text" className="form-control" placeholder="Login" id="login" />
                             </div>
                             <div className="form-group">
-                                <label>Пароль для входа</label>
+                                <label>Password for login</label>
                                 <input type="password" className="form-control" placeholder="Password" id="pass" />
                             </div>
                             <button type="submit" className="btn btn-black" onClick={(e) => {
                                 e.preventDefault();
                                 user.auth(document.getElementById("login").value, document.getElementById("pass").value)
-                            }}>Авторизоватся</button>
+                            }}>Authorise</button>
                         </form>
                     </div>
                 </div>
