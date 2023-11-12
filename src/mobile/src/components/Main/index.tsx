@@ -102,42 +102,42 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
                 contentLabel="Example Modal"
                 ariaHideApp={false}
             >
-                <h2 className="h2">Подробная информация об игроке {item.name} ({item.id})</h2>
+                <h2 className="h2">Detailed player information {item.name} ({item.id})</h2>
                     ID: {item.id}<br />
-                    RP Имя: {item.name}<br />
-                    Отыгранное за сутки время: {item.playedTime} ч.<br />
+                    RP Name: {item.name}<br />
+                    24 hours played: {item.playedTime} ч.<br />
                     Social Club: <img src={"https://a.rsg.sc//n/" + item.social.toLowerCase()} /><a href={"https://ru.socialclub.rockstargames.com/member/" + item.social + "/"} target="_blank">{item.social}</a><br />
                     IP: <a href={"https://ru.infobyip.com/ip-" + item.ip + ".html"} target="_blank">{item.ip}</a><br />
-                    IP Регистрации: <a href={"https://ru.infobyip.com/ip-" + item.ip_reg + ".html"} target="_blank">{item.ip_reg}</a><br />
-                    Наличка: ${item.money}<br />
-                    Банк: ${item.bank} ({item.bankcard})<br />
+                    IP Registration: <a href={"https://ru.infobyip.com/ip-" + item.ip_reg + ".html"} target="_blank">{item.ip_reg}</a><br />
+                    Cash: ${item.money}<br />
+                    Bank: ${item.bank} ({item.bankcard})<br />
                     VIP: {item.vip && vipStatus.getVipStatusData(item.vip) ? vipStatus.getVipStatusData(item.vip).name : item.vip}<br />
-                    Админ уровень: {item.adminLvl}<br />
-                    Хелпер уровень: {item.helperLvl}<br />
+                    Admin level: {item.adminLvl}<br />
+                    Helper Level: {item.helperLvl}<br />
 
 
                 <button className="btn btn-danger" onClick={e => {
                     e.preventDefault();
                     if (user.accept('Кикнуть?')) user.kickUser(item.id)
-                }}>Кикнуть</button>
+                }}>Kick</button>
                 <button className="btn btn-success" onClick={e => {
                     e.preventDefault();
                     let sum = parseInt(user.input("Введите сумму"))
                     if (isNaN(sum) || sum < 0 || sum > 999999999) return user.notify('Значение указанно не верно', "error")
                     if (user.accept('Дать игроку ' + sum + '$?')) user.addMoney(item.id, sum)
-                }}>Выдать наличные</button>
+                }}>Cash withdrawal</button>
                 <button className="btn btn-info" onClick={e => {
                     e.preventDefault();
                     let sum = parseInt(user.input("Введите сумму"))
                     if (isNaN(sum) || sum < 0 || sum > 999999999) return user.notify('Значение указанно не верно', "error")
                     if (user.accept('Отнять у игрока ' + sum + '$?')) user.removeMoney(item.id, sum)
-                }}>Забрать наличные</button>
+                }}>Pick up cash</button>
                 <button className="btn btn-danger" onClick={e => {
                     this.setState({ currentModal: "giveBl_" + item.id })
-                }}>Дать BlackList игроку по ID</button>
+                }}>BlackList a player by ID</button>
                 <button className="btn btn-info" onClick={() => {
                     this.setState({ currentModal: null })
-                }}>Закрыть</button>
+                }}>Close</button>
 
             </Modal>
             <Modal
@@ -149,17 +149,17 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
                 contentLabel="Example Modal"
                 ariaHideApp={false}
             >
-                <h2 className="h2">Дать BlackList игроку {item.name} ({item.id})</h2>
+                <h2 className="h2">Blacklist a player {item.name} ({item.id})</h2>
                 <form>
                     <input className="form-control" placeholder="Введите причину" id={"blReason" + item.id} />
                     <button className="btn btn-success" onClick={e => {
                         e.preventDefault();
                         user.blackList(item.id, document.getElementById('blReason' + item.id).value)
-                    }}>Выполнить</button>
+                    }}>Execute</button>
                 </form>
                 <button className="btn btn-info" onClick={() => {
                     this.setState({ currentModal: "info_" + item.id })
-                }}>Закрыть</button>
+                }}>Close</button>
             </Modal>
         </>
     }
@@ -184,14 +184,14 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
         // if(!this.state.loaded) return <>Загрузка данных</>;
         return <><div className="row">
             <div className="col-lg-6">
-                <h2 className="h2">Администраторы в сети</h2>
+                <h2 className="h2">Administrators online</h2>
                 <table className="table">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">ID</th>
-                            <th scope="col">Уровень</th>
-                            <th scope="col">Имя</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">Name</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -205,25 +205,25 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
                         })}
                     </tbody>
                 </table>
-                <h2 className="h2">Основная информация</h2>
+                <h2 className="h2">Basic Info</h2>
                 <table className="table">
                     <tbody>
-                    <tr><td>Текущий онлайн</td><td>{this.state.users.length} / {this.state.maxPlayers}</td></tr>
-                        <tr><td>Транспорта на карте</td><td>{this.state.vehicles}</td></tr>
-                        <tr><td>Объектов на карте</td><td>{this.state.objects}</td></tr>
+                    <tr><td>Current online</td><td>{this.state.users.length} / {this.state.maxPlayers}</td></tr>
+                        <tr><td>Transports on a map</td><td>{this.state.vehicles}</td></tr>
+                        <tr><td>Items on the map</td><td>{this.state.objects}</td></tr>
                     </tbody>
                 </table>
-                <h2 className="h2">Действия</h2>
+                <h2 className="h2">Actions</h2>
                 <button className="btn btn-success btn-block" onClick={e => {
                     let code = user.input('Введите промокод');
                     user.promocodes(code);
-                }}>Количество активаций промокодов</button>
+                }}>Number of promo code activations</button>
 
 
 
                 <button className="btn btn-info btn-block" onClick={e => {
                     this.setState({ currentModal: "buySiteLogs" })
-                }}>История покупок на сайте</button>
+                }}>Purchase history on the site</button>
                 <Modal
                     isOpen={this.state.currentModal == "buySiteLogs"}
                     onRequestClose={() => {
@@ -233,7 +233,7 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
                     contentLabel="Example Modal"
                     ariaHideApp={false}
                 >
-                    <h2 className="h2">История покупок на сайте (Последние 300)</h2>
+                    <h2 className="h2">Purchase History (Last 300)</h2>
                     <table className="table" style={{
                         height: '300px',
                         overflow: 'auto',
@@ -244,12 +244,12 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">ID</th>
-                                <th scope="col">Игрок</th>
-                                <th scope="col">Действие</th>
-                                <th scope="col">Стоимость</th>
-                                <th scope="col">Было коинов</th>
-                                <th scope="col">Стало коинов</th>
-                                <th scope="col">Время</th>
+                                <th scope="col">Player</th>
+                                <th scope="col">Action</th>
+                                <th scope="col">Cost</th>
+                                <th scope="col">There were coins</th>
+                                <th scope="col">It's gone coin</th>
+                                <th scope="col">Time</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -258,14 +258,14 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
                     </table>
                     <button className="btn btn-info" onClick={() => {
                         this.setState({ currentModal: null })
-                    }}>Закрыть</button>
+                    }}>Close</button>
                 </Modal>
 
 
 
                 <button className="btn btn-info btn-block" onClick={e => {
                     this.setState({ currentModal: "warnClear" })
-                }}>Очистить варн по ID</button>
+                }}>Clear warp by ID</button>
                 <Modal
                     isOpen={this.state.currentModal == "warnClear"}
                     onRequestClose={() => {
@@ -275,21 +275,21 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
                     contentLabel="Example Modal"
                     ariaHideApp={false}
                 >
-                    <h2 className="h2">Очистить варн по ID</h2>
+                    <h2 className="h2">Clear warp by ID</h2>
                     <form>
                         <input className="form-control" placeholder="Введите ID Варна" id="warnId" />
                         <button className="btn btn-success" onClick={e => {
                             e.preventDefault();
                             user.removeWarn(parseInt(document.getElementById('warnId').value))
-                        }}>Удалить варн</button>
+                        }}>Remove the warp</button>
                     </form>
                     <button className="btn btn-info" onClick={() => {
                         this.setState({ currentModal: null })
-                    }}>Закрыть</button>
+                    }}>Close</button>
                 </Modal>
                 <button className="btn btn-success btn-block" onClick={e => {
                     this.setState({ currentModal: "giveWl" })
-                }}>Внести Social в белый список WhiteList</button>
+                }}>Put Social on the WhiteList</button>
                 <Modal
                     isOpen={this.state.currentModal == "giveWl"}
                     onRequestClose={() => {
@@ -299,21 +299,21 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
                     contentLabel="Example Modal"
                     ariaHideApp={false}
                 >
-                    <h2 className="h2">Внести Social в белый список WhiteList</h2>
+                    <h2 className="h2">Put Social on the WhiteList</h2>
                     <form>
                         <input className="form-control" placeholder="Введите Social" id="wlId" />
                         <button className="btn btn-success" onClick={e => {
                             e.preventDefault();
                             user.whiteList(document.getElementById('wlId').value)
-                        }}>Выполнить</button>
+                        }}>Execute</button>
                     </form>
                     <button className="btn btn-info" onClick={() => {
                         this.setState({ currentModal: null })
-                    }}>Закрыть</button>
+                    }}>Close</button>
                 </Modal>
                 <button className="btn btn-danger btn-block" onClick={e => {
                     this.setState({ currentModal: "giveBl" })
-                }}>Дать BlackList игроку по ID</button>
+                }}>Give BlackList to a player by ID</button>
                 <Modal
                     isOpen={this.state.currentModal == "giveBl"}
                     onRequestClose={() => {
@@ -323,22 +323,22 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
                     contentLabel="Example Modal"
                     ariaHideApp={false}
                 >
-                    <h2 className="h2">Дать BlackList игроку по ID</h2>
+                    <h2 className="h2">Give BlackList to a player by ID</h2>
                     <form>
                         <input className="form-control" placeholder="Введите ID Игрока" id="blId" />
                         <input className="form-control" placeholder="Введите причину" id="blReason" />
                         <button className="btn btn-success" onClick={e => {
                             e.preventDefault();
                             user.blackList(parseInt(document.getElementById('blId').value), document.getElementById('blReason').value)
-                        }}>Выполнить</button>
+                        }}>Execute</button>
                     </form>
                     <button className="btn btn-info" onClick={() => {
                         this.setState({ currentModal: null })
-                    }}>Закрыть</button>
+                    }}>Close</button>
                 </Modal>
                 <button className="btn btn-success btn-block" onClick={e => {
                     this.setState({ currentModal: "clearBl" })
-                }}>Снять BlackList с игрока по ID</button>
+                }}>Remove BlackList from a player by ID</button>
                 <Modal
                     isOpen={this.state.currentModal == "clearBl"}
                     onRequestClose={() => {
@@ -348,21 +348,21 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
                     contentLabel="Example Modal"
                     ariaHideApp={false}
                 >
-                    <h2 className="h2">Снять BlackList с игрока по ID</h2>
+                    <h2 className="h2">Remove BlackList from a player by ID</h2>
                     <form>
                         <input className="form-control" placeholder="Введите ID Игрока" id="blIdr" />
                         <button className="btn btn-success" onClick={e => {
                             e.preventDefault();
                             user.blackListRM(parseInt(document.getElementById('blIdr').value))
-                        }}>Выполнить</button>
+                        }}>Execute</button>
                     </form>
                     <button className="btn btn-info" onClick={() => {
                         this.setState({ currentModal: null })
-                    }}>Закрыть</button>
+                    }}>Close</button>
                 </Modal>
                 <button className="btn btn-success btn-block" onClick={e => {
                     this.setState({ currentModal: "reboot" })
-                }}>Перезагрузка сервера</button>
+                }}>Server restart</button>
                 <Modal
                     isOpen={this.state.currentModal == "reboot"}
                     onRequestClose={() => {
@@ -372,27 +372,27 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
                     contentLabel="Example Modal"
                     ariaHideApp={false}
                 >
-                    <h2 className="h2">Перезагрузка сервера</h2>
+                    <h2 className="h2">Server restart</h2>
                     <form>
                         <input className="form-control" placeholder="Введите количество минут" id="rebootMin" />
                         <input className="form-control" placeholder="Введите причину перезагрузки" id="rebootReason" />
                         <button className="btn btn-success" onClick={e => {
                             e.preventDefault();
                             user.reboot(parseInt(document.getElementById('rebootMin').value), document.getElementById('rebootReason').value)
-                        }}>Выполнить</button>
+                        }}>Execute</button>
                     </form>
                     <button className="btn btn-info" onClick={() => {
                         this.setState({ currentModal: null })
-                    }}>Закрыть</button>
+                    }}>Close</button>
                 </Modal>
                 <br/>
                 <div className="row">
-                    <div className="col-lg-6"><a className="btn btn-success btn-block" target="_blank" href={'/web/livemap.html?adminshow=1&login=' + user.data.login + "&token=" + user.data.passToken}>Карта сервера</a></div>
-                    <div className="col-lg-6"><a className="btn btn-success btn-block" target="_blank" href={'/web/livemap.html'}>Карта каптов</a></div>
+                    <div className="col-lg-6"><a className="btn btn-success btn-block" target="_blank" href={'/web/livemap.html?adminshow=1&login=' + user.data.login + "&token=" + user.data.passToken}>Server Map</a></div>
+                    <div className="col-lg-6"><a className="btn btn-success btn-block" target="_blank" href={'/web/livemap.html'}>Map of captures</a></div>
                 </div>
             </div>
             <div className="col-lg-6">
-                <h2 className="h2">Настройки X параметров</h2>
+                <h2 className="h2">X parameter settings</h2>
                 <table className="table">
                     <tbody>
                         {this.xparamDataGen()}
@@ -403,7 +403,7 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
         </div>
             <div className="content">
                 <div className="row">
-                    <div className="col-lg-6 col-sm-12"><h2 className="h2">Список игроков</h2></div>
+                    <div className="col-lg-6 col-sm-12"><h2 className="h2">List of players</h2></div>
                     <div className="col-lg-6 col-sm-12"><input
                         type="text"
                         placeholder="Поиск по игрокам (ID, Name, Social etc.)"
@@ -421,10 +421,10 @@ export class Main extends Component<any, { maxPlayers: number, search: string, x
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">ID</th>
-                            <th scope="col">Имя</th>
-                            <th scope="col">Фракция</th>
-                            <th scope="col">Ранг</th>
-                            <th scope="col">Админ</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Faction</th>
+                            <th scope="col">Rank</th>
+                            <th scope="col">Admin</th>
                         </tr>
                     </thead>
                     <tbody>
