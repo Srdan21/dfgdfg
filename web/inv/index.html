@@ -20,38 +20,38 @@
 	<div style="display: none" class="inventWrapper animated fadeOut">
 		<!-- убрать fadeIn сделать fadeOut -->
 		<div class="inventWrapper__btn" onclick="mp.trigger('client:inv:updateItems', 0, 1)">
-			<span class="inventWrapper__btn-blockHeader">МОЙ ИНВЕНТАРЬ</span>
+			<span class="inventWrapper__btn-blockHeader">MY INVENTORY</span>
 		</div>
 		<div class="inventWrapper__btn" onclick="mp.trigger('client:inv:updateItems', 0, 8)">
-			<span class="inventWrapper__btn-blockHeader">БАГАЖНИК БЛИЖ. ТС</span>
+			<span class="inventWrapper__btn-blockHeader">LUGGAGE COMPARTMENT. TC</span>
 		</div>
 		<div class="inventWrapper__btn" onclick="mp.trigger('client:inv:updateItems', 0, 0)">
-			<span class="inventWrapper__btn-blockHeader">ПРЕДМЕТЫ РЯДОМ</span>
+			<span class="inventWrapper__btn-blockHeader">ITEMS NEARBY</span>
 		</div>
 		<div class="inventWrapper__btn-close" onclick="mp.trigger('client:inv:hide')">
 			<span class="inventWrapper__btn-close-blockHeader">X</span>
 		</div>
 		<div class="inventWrapper__col">
-			<span class="inventWrapper__col-blockHeader" id="invLabel">Инвентарь</span>
+			<span class="inventWrapper__col-blockHeader" id="invLabel">Inventory</span>
 			<div class="group animated fadeInDown" style="display: none">
 				<input id="filter_input" type="text" required="required" /><span class="highlight"></span><span class="bar"></span>
-				<label>Поиск предметов</label>
+				<label>Searching for items</label>
 			</div>
 			<div class="inventWrapper__col-blockContent animated" id="invContent">
 				<div data-filtered="true" class="inventWrapper__col-blockContent-listingItem panel1" data-type="m0">
 					<img src="_img/items/Item_99.png">
 					<div>
-						<span class="inventWrapper__col-blockContent-listingItem-title">Наименование предмета</span>
-						<span class="inventWrapper__col-blockContent-listingItem-setting">Вес:</span>
+						<span class="inventWrapper__col-blockContent-listingItem-title">Name of subject</span>
+						<span class="inventWrapper__col-blockContent-listingItem-setting">Weight:</span>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="inventWrapper__col">
 			<div class="inventWrapper__col-centerBlock">
-				<span class="inventWrapper__col-blockHeader">Информация</span>
-				<span class="inventWrapper__col-blockContent-listingItem-title">Имя: <span id="name"></span></span>
-				<span class="inventWrapper__col-blockContent-listingItem-title">Уровень: <span id="age"></span></span>
+				<span class="inventWrapper__col-blockHeader">Information</span>
+				<span class="inventWrapper__col-blockContent-listingItem-title">Name: <span id="name"></span></span>
+				<span class="inventWrapper__col-blockContent-listingItem-title">Level: <span id="age"></span></span>
 				<!-- <span class="inventWrapper__col-blockContent-listingItem-title">Месяцы: <span id="month"></span></span> -->
 			</div>
 			<div class="inventWrapper__col-contentCenterBlock">
@@ -153,10 +153,10 @@ data-menu="bar2">
 </div>
 </div>
 <div class="inventWrapper__col">
-	<span class="inventWrapper__col-blockHeader">Оружие</span>
+	<span class="inventWrapper__col-blockHeader">Weapons</span>
 	<div class="inventWrapper__col-blockContent animated" id="invWeapons">
 		<div class="inventWrapper__col-blockContent-listingItem panel3" data-menu="bar3">
-			<span class="inventWrapper__col-blockContent-listingItem-title">Наименование предмета</span>
+			<span class="inventWrapper__col-blockContent-listingItem-title">Name of subject</span>
 		</div>
 	</div>
 </div>
