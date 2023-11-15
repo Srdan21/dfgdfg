@@ -4,7 +4,7 @@
 <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
 <div class="hud-data">
   <progress id="loader" max="100" value="0" style="width:100%"></progress><br />
-  <center id="text" style="padding-top: 5px;">Нажимайте SPACE когда шкала будет максимально заполнена</center>
+  <center id="text" style="padding-top: 5px;">Press SPACE when the scale is maximally full</center>
 </div>
 <style>
   .hud-data {
@@ -46,7 +46,7 @@
 </style>
 
 <script>
-  let defaultText = "Нажимайте SPACE когда шкала будет максимально заполнена"
+  let defaultText = "Press SPACE when the scale is maximally full"
   let counter = 5;
   let trys = 5;
   let spam = false;
@@ -87,7 +87,7 @@
         trys--;
         $( ".hud-data" ).effect( "shake" );
 
-        $( "#text" ).html("Промах");
+        $( "#text" ).html("Missing");
         $( "#text" ).css( "color", "red" );
         setTimeout(() => {
           $( "#text" ).html(defaultText);
