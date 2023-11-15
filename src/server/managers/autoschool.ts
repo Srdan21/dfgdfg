@@ -66,9 +66,9 @@ class autoschoolClass {
     this.theoryMap = new Map();
     this.id = ids;
     this.position = position;
-    methods.createDynamicCheckpoint(this.position, "Нажмите ~g~E~w~ чтобы открыть меню лицензионного центра", (player) => {
+    methods.createDynamicCheckpoint(this.position, "Press ~g~E~w~ to open the Licence Centre menu", (player) => {
       // console.log("[AUTOSCHOOL] ENTER DYNAMIC CHECK")
-      if(!enabledSystem.autoschool) return player.notify("Лицензионный центр на временных тех работах. Загляните чуть позже")
+      if(!enabledSystem.autoschool) return player.notify("Licence centre on temporary maintenance. Check back later.")
       this.menu(player)
     }, 2, 0)
     mp.blips.new(77, this.position, {
@@ -82,11 +82,11 @@ class autoschoolClass {
   menu(player:PlayerMp){
     user.questWorks(player)
     // console.log("[AUTOSCHOOL] OPEN MENU")
-    let m = menu.new(player, "Лицензии", "Доступные лицензии");
+    let m = menu.new(player, "Licences", "Licences available");
     let cats = ["a", "b", "c"];
     if(user.get(player, 'fraction_id') == 17){
       m.newItem({
-        name: "Ожидающие экзамен",
+        name: "Awaiting the exam",
         more: [...examWaitList].filter(i => !i[1].start).length,
         onpress: () => {
           this.examsList(player)
@@ -95,27 +95,27 @@ class autoschoolClass {
     }
     cats.forEach(cat => {
       m.newItem({
-        name: "Категория "+cat.toUpperCase(),
-        more: user.get(player, cat+"_lic") ? "~g~Получено" : "~b~Получить (~g~$"+licCost[cat]+"~b~)",
+        name: "Category "+cat.toUpperCase(),
+        more: user.get(player, cat+"_lic") ? "~g~Received" : "~b~Receive (~g~$"+licCost[cat]+"~b~)",
         onpress: () => {
-          if(user.get(player, cat+"_lic")) return player.notify("У вас уже есть данное удостоверение");
+          if(user.get(player, cat+"_lic")) return player.notify("You already have this licence");
           this.startExam(player, cat);
         }
       })
     })
     m.newItem({
-      name: "Категория "+("Водный ТС"),
-      more: user.get(player, "ship_lic") ? "~g~Получено" : "~b~Получить (~g~$"+licCost["ship"]+"~b~)",
+      name: "Category "+("Water TC"),
+      more: user.get(player, "ship_lic") ? "~g~Received" : "~b~Receive (~g~$"+licCost["ship"]+"~b~)",
       onpress: () => {
         if(user.get(player, "ship_lic")) return player.notify("У вас уже есть данная лицензия");
         this.startExam(player, "ship");
       }
     })
     m.newItem({
-      name: "Категория "+("Воздушный ТС"),
-      more: user.get(player, "air_lic") ? "~g~Получено" : "~b~Получить (~g~$"+licCost["air"]+"~b~)",
+      name: "Category "+("Water TC"),
+      more: user.get(player, "air_lic") ? "~g~Received" : "~b~Received (~g~$"+licCost["air"]+"~b~)",
       onpress: () => {
-        if(user.get(player, "air_lic")) return player.notify("У вас уже есть данная лицензия");
+        if(user.get(player, "air_lic")) return player.notify("You already have this licence");
         this.startExam(player, "air");
       }
     })
@@ -124,12 +124,12 @@ class autoschoolClass {
 
   startExam(player:PlayerMp,lic:string){
     // console.log("[AUTOSCHOOL] START EXAM")
-    if(player.autoschoolExam) return player.notify("Вы уже сдаёте экзамен"); 
+    if(player.autoschoolExam) return player.notify("You're already taking the exam"); 
     
     // if(player.autoschoolExamProtect) return player.notify(`~r~Вы можете повторно сдавать экзамен через ${player.autoschoolExamProtect} мин.`);
-    if(user.get(player, lic+"_lic")) return player.notify("У вас уже есть данное удостоверение");
+    if(user.get(player, lic+"_lic")) return player.notify("You already have this licence");
     let cost = licCost[lic];
-    if(user.getMoney(player) < cost) return player.notify("У вас недостаточно средств для оплаты");
+    if(user.getMoney(player) < cost) return player.notify("You have insufficient funds to pay");
     // player.autoschoolExamProtect = 10;
     // const check = () => {
     //   if(!mp.players.exists(player)) return;
@@ -146,7 +146,7 @@ class autoschoolClass {
     // check();
     player.autoschoolExam = this.id
     user.removeCashMoney(player, cost);
-    player.notify("Пошлина за экзамен оплачена")
+    player.notify("Exam fee paid")
     let cats = ["a", "b", "c"];
     let needPractice = true;
     cats.map((item) => {
@@ -159,12 +159,12 @@ class autoschoolClass {
   starPractice(player:PlayerMp, lic:string){
     // console.log("[AUTOSCHOOL] START PRACTICE")
     examWaitList.set(player.id, {lic,status:false,start:false});
-    player.notify("~g~Ищем свободного инструктора, максимальное время ожидания - 30 секунд");
+    player.notify("~g~Looking for an available instructor, maximum wait time is 30 seconds");
     this.requestExam(player, lic);
     setTimeout(() => {
       if(!mp.players.exists(player)) return;
       if(examWaitList.get(player.id).start) return;
-      player.notify("Свободных инструкторов на данный момент нет. Экзамем пройдёт в автоматическом режиме")
+      player.notify("There are no available instructors at this time. Exame will take place automatically")
       this.tehnicalStart(player, lic);
     }, 30000)
     
@@ -178,13 +178,13 @@ class autoschoolClass {
       if(user.isLogin(target)){
         if(user.get(target, 'fraction_id') == 17){
           if(target.dist(autoschoolPos) < 3000){
-            user.accept(target, name+" требуется экзаменатор, категория "+this.getLicName(lic)).then(status => {
+            user.accept(target, name+" Examiner required, category "+this.getLicName(lic)).then(status => {
               if(!status) return;
-              if(getExam) return target.notify("Экзамен уже принят кем то другим")
-              if(!mp.players.exists(player)) return target.notify("Игрок покинул сервер")
+              if(getExam) return target.notify("The exam has already been taken by someone else")
+              if(!mp.players.exists(player)) return target.notify("The player has left the server")
               getExam = true;
               examWaitList.get(player.id).status = true;
-              player.notify(user.getRpName(target)+" направляется к вам, ожидайте");
+              player.notify(user.getRpName(target)+" heading your way, expect");
             })
           }
         }
@@ -195,12 +195,12 @@ class autoschoolClass {
     if(type == "a") return "A";
     else if(type == "b") return "B";
     else if(type == "c") return "C";
-    else if(type == "air") return "Авиа";
-    else if(type == "ship") return "Водный";
+    else if(type == "air") return "Aviation";
+    else if(type == "ship") return "Aquatic";
   }
   examsList(player:PlayerMp){
     // console.log("[AUTOSCHOOL] EXAMS LIST")
-    let m = menu.new(player, "Экзамен", "Список");
+    let m = menu.new(player, "Exam", "List");
     examWaitList.forEach((data, targetid) => {
       let target = mp.players.at(targetid);
       if(!mp.players.exists(target)){
@@ -212,11 +212,11 @@ class autoschoolClass {
             more: this.getLicName(data.lic),
             onpress: () => {
               if(target.dist(autoschoolPos) > 50){
-                target.notify("Вернитесь к автошколе, инструктор вас ожидает");
-                player.notify(user.getRpName(target)+" отошёл от автошколы, дождитесь его");
+                target.notify("Go back to the driving school, the instructor is waiting for you");
+                player.notify(user.getRpName(target)+" has left the driving school, wait for him.");
                 return;
               }
-              if(target.id == player.id) return player.notify("~r~Вы не можете принимать экзамен у самого себя");
+              if(target.id == player.id) return player.notify("~r~You can't take an exam from yourself");
               this.tehnicalStart(target, data.lic, player);
             }
           })
@@ -284,12 +284,12 @@ class autoschoolClass {
     this.theoryMap.set(user.getId(player), (status:boolean|number) => {
       if(typeof status == "number" && status == 2){
         user.addCashMoney(player, licCost[lic])
-        player.notify("~g~Мы вернули вам средства за оплату экзамена")
+        player.notify("~g~We have refunded your exam fees")
         player.autoschoolExam = null
         return
       }
       if(!status){
-        player.notify('Вы не сдали теорию')
+        player.notify('You didn't pass the theory')
         player.autoschoolExam = null
       } else {
         this.starPractice(player, lic);
@@ -353,7 +353,7 @@ chat.registerCommand("pointcatch", (player) => {
     z:number;
     h:number;
   }[] = [];
-  let m = menu.new(player, "Сборка");
+  let m = menu.new(player, "Assembly");
   m.newItem({
     name: "Новая",
     onpress: () => {
@@ -367,7 +367,7 @@ chat.registerCommand("pointcatch", (player) => {
     }
   })
   m.newItem({
-    name: "Сохранить",
+    name: "Save",
     onpress: () => {
       methods.saveLog("pointCatch", JSON.stringify(points));
     }
@@ -377,46 +377,44 @@ chat.registerCommand("pointcatch", (player) => {
 let schools = new autoschoolClass(autoschoolPos);
 
 
-npc_dialog.new("Антонио", "Инструктор", new mp.Vector3(-705.78, -1303.13, 5.11), 60.42, "ig_tomepsilon", (player) => {
-  npc_dialog.open(player, `Здравствуйте. Выберите что вас интересует`, ["Правила дорожного движения штата san andreas", "Порядок дорожного движения", "Общие правила", "Начало движения, маневрирование", "Сигналы светофора и регулировщика", "Правила обгона", "Дорожная разметка", "Пользование внешними световыми приборами и звуковыми сигналами", "Ничего, спасибо"]).then(res => {
+npc_dialog.new("Antonio", "Instructor", new mp.Vector3(-705.78, -1303.13, 5.11), 60.42, "ig_tomepsilon", (player) => {
+  npc_dialog.open(player, `Hello. Choose what you are interested in`, ["san andreas state traffic regulations", "Road Traffic Order", "General Rules", "Starting Traffic, Manoeuvring", "Traffic Light and Regulator Signals", "Overtaking Rules", "Road Markings", "Use of External Lights and Sound Signals", "Nothing, Thanks"]).then(res => {
     let text = "";
-    if(res == 0) text = `Правила Дорожного Движения - свод правил, регулирующих обязанности участников дорожного движения (водителей транспортных средств, их пассажиров, пешеходов и т.д.), а также технические требования, предъявляемые к транспортным средствам для обеспечения безопасности дорожного движения.`;
-    if(res == 1) text = `-  Движение транспортных средств является правосторонним.
-    -  Все участники дорожного движения, организаторы дорожного движения и другие лица должны соблюдать требования правовых актов по дорожному движению, быть внимательными и осмотрительными в дорожном движении и обеспечивать ритмичность движения с целью предотвращения возникновения опасности и причинения вреда.
+    if(res == 0) text = `Road Traffic Rules - a set of rules governing the obligations of road users (drivers of vehicles, their passengers, pedestrians, etc.), as well as technical requirements for vehicles to ensure road safety.`;
+    if(res == 1) text = `-  The movement of vehicles is right-handed.
+    -  All road users, traffic organisers and other persons shall comply with the requirements of legal acts on road traffic, be attentive and prudent in road traffic and ensure the rhythm of traffic in order to prevent danger and harm.
     `
-    if(res == 2) text = `- пройти обучение навыкам вождения на автомобиле или мотоцикле можно только начиная с 16 лет.
-    - Перед началом движения, перестроением, поворотом (разворотом) и остановкой водитель обязан подавать сигналы световыми указателями поворота соответствующего направления
-    -  При приближении транспортного средства с включенными проблесковым маячком синего цвета и специальным звуковым сигналом водители обязаны уступить дорогу для обеспечения беспрепятственного проезда указанного транспортного средства. 
-    - При съезде автомобиля правыми колесами на неукрепленную и влажную обочину возникает опасность заноса из-за разницы сцепления правых и левых колес с дорогой. При этом целесообразно, не меняя скорости, т.е. не прибегая к торможению, плавным поворотом рулевого колеса вернуть автомобиль на проезжую часть. Торможение в данной ситуации может вызвать занос автомобиля.`;
-    if(res == 3) text = `- Перед началом движения, перестроением, поворотом (разворотом) и остановкой водитель обязан подавать сигналы световыми указателями поворота соответствующего направления
-    - При перестроении водитель должен уступить дорогу транспортным средствам, движущимся попутно без изменения направления движения. При одновременном перестроении транспортных средств, движущихся попутно, водитель должен уступить дорогу транспортному средству, находящемуся справа
-    - При выезде на дорогу с прилегающей территории водитель должен уступить дорогу транспортным средствам и пешеходам, движущимся по ней, а при съезде с дороги - пешеходам и велосипедистам, путь движения которых он пересекает`
-    if(res == 4) text = `Круглые сигналы светофора имеют следующие значения:
-    - ЗЕЛЕНЫЙ СИГНАЛ разрешает движение;
-    - ЗЕЛЕНЫЙ МИГАЮЩИЙ СИГНАЛ  разрешает движение и информирует вас о том, что в скоре будет включен запрещающий сигнал
-    - ЖЕЛТЫЙ МИГАЮЩИЙ СИГНАЛ разрешает движение и информирует о наличии нерегулируемого перекрестка или пешеходного перехода, предупреждает об опасности;
-    - КРАСНЫЙ СИГНАЛ, в том числе мигающий, запрещает движение.`
-    if(res == 5) text = `Перед началом обгона водитель должен убедиться в том, что:
-    - водитель транспортного средства, которое двигается впереди по той самой полосе, не подал сигнал о намерении поворота (перестроение) налево;
-    - полоса , предназначенная для встречного движения, свободна на достаточно для обгона расстоянии;
-    -  ваше транспортное средство никто не обгоняет.
-    - водителю обгоняемого транспортного средства запрещается препятствовать обгону путем повышения скорости движения или иными действиями.`
-    if(res == 6) text = `Белые и желтые линии - Могут быть сплошными и прерывистыми, одиночными и двойными. Они используются для отделения полос и разделения движения потоков транспортных средств.
-    Желтые линии - отделяют полосы движения транспортных средств движущихся в противоположном направлении. Так-же одиночная желтая линия может отделять правую кромку обочины на шоссе.
-    Белые линии - отделяют полосы движения транспортных средств движущихся в одном направлении. Так-же одиночная желтая линия может отделять правую кромку обочины на шоссе.
-    - Прерывистая одиночная желтая линия - Следует держаться правее от линии, за исключением случая когда вы обгоняете впереди идущее Т/С. Вы можете пересекать прерывистую желтую линию только для безопасного обгона впереди идущих транспортных средств, и в случаях пересечения перекрестка если это обусловлено дорожной разметкой .
-    - Прерывисто-сплошная двойная желтая линия - Сплошная желтая линия справа от прерывистой желтой линии означает что по встречной полосе на этом участке обгон запрещен (за исключением безопасного поворота налево на перекрестках, проезда прямо на перекрестках если это обусловлено дорожной разметкой в виде стрелки направления движения вашей полосы “движение только прямо”). Если прерывистая желтая линия находится справа от сплошной желтой линии вы можете совершить обгон впереди идущего Т/С и занять свою полосу (даже пересекая сплошную желтую линию).
-    - Двойная желтая линия - Обгон на этом участке дороге запрещен. Пересекать двойную желтую линию запрещено за исключением безопасного пересечения перекрестков если это обусловлено соответствующей дорожной разметкой .
-    - Прерывистая белая линия - Используется для разделения полос движения в одном направлении.
-    - Пересекать прерывистую белую линию разрешено если этот маневр будет безопасным.`
-    if(res == 7) text = `-  В темное время суток и в условиях недостаточной видимости независимо от освещения дороги, а также в тоннелях на движущемся транспортном средстве должны быть включены следующие световые приборы:
-    на всех механических транспортных средствах - фары дальнего или ближнего света, на велосипедах - фары или фонари, на гужевых повозках - фонари (при их наличии);
-    - Дальний свет должен быть переключен на ближний:
-    в населенных пунктах, если дорога освещена;
-    при встречном разъезде на расстоянии не менее чем за 150 м до транспортного средства, а также и при большем, если водитель встречного транспортного средства периодическим переключением света фар покажет необходимость этого;
-    в любых других случаях для исключения возможности ослепления водителей как встречных, так и попутных транспортных средств.`
+    if(res == 2) text = `- you can only receive training in driving a car or motorbike from the age of 16.
+    - Before starting to drive, rearranging, turning (U-turn) and stopping, the driver must signal with the direction indicator lights of the appropriate direction
+    - When approaching a vehicle with a blue flashing beacon and a special sound signal switched on, drivers are obliged to give way in order to ensure the unobstructed passage of the said vehicle. 
+    - When a vehicle drives off with its right wheels on an unreinforced and wet kerb, there is a risk of skidding due to the difference in grip of the right and left wheels on the road. It is advisable to return the car to the carriageway by turning the steering wheel without changing speed, i.e. without braking. Braking in this situation may cause the car to skid.`;
+    if(res == 3) text = `- Before starting to move, rearrangement, turning (U-turn) and stopping, the driver shall be obliged to signal with the direction indicator lights of the appropriate direction
+    - When changing lanes, the driver shall give way to vehicles travelling on the opposite side of the road without changing the direction of movement. When simultaneously realigning vehicles travelling on the opposite side of the road, the driver shall give way to the vehicle on the right.
+    - When entering the road from the adjacent territory, the driver shall give way to vehicles and pedestrians travelling on it, and when leaving the road - to pedestrians and cyclists whose path of movement he crosses`
+    if(res == 4) text = `The round traffic light signals have the following meanings:
+    - GREEN SIGNAL authorises traffic;
+    - GREEN flashing signal authorises traffic and informs you that a prohibited signal is about to be switched on.
+    - YELLOW flashing signal authorises traffic and informs you that there is an unregulated junction or pedestrian crossing and warns of danger;
+    - RED SIGNAL, including flashing, prohibits traffic.`
+    if(res == 5) text = `Before starting overtaking, the driver must make sure that:
+    - the driver of the vehicle ahead in the same lane has not signalled his intention to turn (change lane) to the left;
+    - the lane intended for oncoming traffic is free at a sufficient distance for overtaking;
+    - your vehicle is not being overtaken.
+    - The driver of the vehicle being overtaken is prohibited from obstructing the overtaking by increasing the speed or other actions.`
+    if(res == 6) text = `White and yellow lines - Can be solid or broken, single or double. They are used to separate lanes and separate traffic flows.
+    Yellow lines - Separate the lanes of vehicles travelling in the opposite direction. A single yellow line can also separate the right-hand edge of the kerb on a motorway.
+    White lines - separates the lanes of vehicles travelling in the same direction. A single yellow line may also separate the right-hand edge of the kerb on a motorway.
+    - Interrupted single yellow line - Keep to the right of the line unless you are overtaking the vehicle ahead. You may cross the dashed yellow line only to safely overtake vehicles ahead, and when crossing a junction where the road markings indicate this.
+    - Interrupted-solid double yellow line - A solid yellow line to the right of the interrupted yellow line means that overtaking is prohibited on the oncoming lane in this section (except for safe left turns at junctions, passing straight ahead at junctions if this is indicated by a road marking in the form of a direction arrow in your lane "straight ahead only"). If the dashed yellow line is to the right of the solid yellow line you can overtake the vehicle ahead and take your lane (even crossing the solid yellow line).
+    - Double yellow line - Overtaking is prohibited on this section of road. Crossing the double yellow line`
+    if(res == 7) text = `-  In the dark and in conditions of insufficient visibility, irrespective of the illumination of the road, and in tunnels, the following lights shall be switched on on a moving vehicle:
+    on all motor vehicles - headlights of high beam or dipped beam, on bicycles - headlights or lights, on go-carts - lights (if any);
+    - High beam shall be switched to dipped beam:
+    in populated areas, if the road is illuminated;
+    at oncoming traffic at a distance of at least 150 metres from the vehicle, and even more if the driver of the oncoming vehicle shows the necessity to do so by periodically switching the headlamps;
+    in any other case to avoid the possibility of dazzling the drivers of both oncoming and passing vehicles.`
     if(!text) return npc_dialog.close(player);
-    npc_dialog.open(player, gtaStrToHtml(text), ["Благодарю за информацию"])
+    npc_dialog.open(player, gtaStrToHtml(text), ["Thank you for the information"])
   });
 })
 
