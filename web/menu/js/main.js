@@ -9,7 +9,7 @@ var menuItems = [
             {
                 id   : 'giveMoney',
                 icon: '#money',
-                title: 'Передать'
+                title: 'Pass it on'
             },
             {
                 id   : 'friend',
@@ -33,7 +33,7 @@ var menuItems = [
             },
             {
                 id   : 'outCar',
-                title: 'Вытащить',
+                title: 'take out',
                 icon: '#car'
             },
             {
