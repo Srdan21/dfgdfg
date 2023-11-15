@@ -19,11 +19,11 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>Позиция</th>
-							<th>Имя</th>
+							<th>Position</th>
+							<th>Name</th>
 							<th>ТС</th>
-							<th>Время</th>
-							<th>Лучший круг</th>
+							<th>Time</th>
+							<th>Best lap</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -36,7 +36,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<div class="closeHelp closeButton" @click="exitFromLobby()">🖱️ Закрыть и выйти из лобби</div>
+				<div class="closeHelp closeButton" @click="exitFromLobby()">🖱️ Close and exit the lobby</div>
 			</div>
 
 
@@ -48,9 +48,9 @@
 					<tbody>
 						<tr>
 							<td class="pos1">{{myPosition}}</td>
-							<td class="pos2">&nbsp;Позиция<br/>&nbsp;&nbsp;/ {{racersCount}}</td>
-							<td class="pos2">&nbsp;Чекпоинт<br/>&nbsp;{{currentCheckPoint}} / {{raceCheckpoints}}</td>
-							<td class="pos2" v-if="raceLaps > 1">&nbsp;<span v-bind:style="currentLap == raceLaps ? 'background-color:red;padding:2px;border-radius:5px;' : ''">Круг</span><br/>&nbsp;{{currentLap}} / {{raceLaps}}</td>
+							<td class="pos2">&nbsp;Position<br/>&nbsp;&nbsp;/ {{racersCount}}</td>
+							<td class="pos2">&nbsp;Checkpoint<br/>&nbsp;{{currentCheckPoint}} / {{raceCheckpoints}}</td>
+							<td class="pos2" v-if="raceLaps > 1">&nbsp;<span v-bind:style="currentLap == raceLaps ? 'background-color:red;padding:2px;border-radius:5px;' : ''">Circle</span><br/>&nbsp;{{currentLap}} / {{raceLaps}}</td>
 						</tr>
 						<tr>
 							<td class="pos2" colspan="4" style="text-align:center;">{{vehicleName}}</td>
@@ -97,8 +97,8 @@
 
 			<div v-if="(playersRaceShow || spectate) && !qualificationShow" class="hud2">
 				Время: {{millisToMinutesAndSeconds(currentTime - startTime)}}<br />
-				<span  v-if="!spectate" v-bind:style="'color:'+bestLapColor">Лучшее время круга: {{millisToMinutesAndSeconds(bestLap)}}<br /></span>
-				<span>{{(raceTimeEnd > 0) ? ("До конца гонки: "+millisToMinutesAndSeconds((raceTimeEnd - currentTime) > 0 ? (raceTimeEnd - currentTime) : 0)) : "Время гонки не ограничено"}}</span>
+				<span  v-if="!spectate" v-bind:style="'color:'+bestLapColor">Best lap time: {{millisToMinutesAndSeconds(bestLap)}}<br /></span>
+				<span>{{(raceTimeEnd > 0) ? ("For the rest of the race: "+millisToMinutesAndSeconds((raceTimeEnd - currentTime) > 0 ? (raceTimeEnd - currentTime) : 0)) : "Race time is not limited"}}</span>
 			</div>
 
 
@@ -122,9 +122,9 @@
 			</div>
 
 			<div v-if="qualificationShow" class="hud2">
-				<span v-if="!spectate">Время текущего круга: {{millisToMinutesAndSeconds(currentTime - startTime)}}<br /></span>
-				<span v-if="!spectate" v-bind:style="'color:'+bestLapColor">Лучшее время круга: {{millisToMinutesAndSeconds(bestLap)}}<br /></span>
-				<span>До окончания: {{millisToMinutesAndSeconds((qualificationEnd - currentTime) > 0 ? (qualificationEnd - currentTime) : 0)}}</span>
+				<span v-if="!spectate">The current lap time: {{millisToMinutesAndSeconds(currentTime - startTime)}}<br /></span>
+				<span v-if="!spectate" v-bind:style="'color:'+bestLapColor">Best lap time: {{millisToMinutesAndSeconds(bestLap)}}<br /></span>
+				<span>To finish: {{millisToMinutesAndSeconds((qualificationEnd - currentTime) > 0 ? (qualificationEnd - currentTime) : 0)}}</span>
 			</div>
 
 
