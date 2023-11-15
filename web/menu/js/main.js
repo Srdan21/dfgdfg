@@ -3,7 +3,7 @@
 var menuItems = [
     {
         id   : 'do',
-        title: 'Действия',
+        title: 'Actions',
         icon: '#people',
         items: [
             {
@@ -14,21 +14,21 @@ var menuItems = [
             {
                 id   : 'friend',
                 icon : '#friend',
-                title: 'Знакомство'
+                title: 'Familiarity'
             },
             {
                 id   : 'uncuff',
-                title: 'Снять',
+                title: 'Take it off',
                 icon: '#cuff'
             },
             {
                 id   : 'cuff',
-                title: 'Надеть',
+                title: 'Put on',
                 icon: '#cuff'
             },
             {
                 id   : 'inCar',
-                title: 'Затащить',
+                title: 'drag in',
                 icon: '#car'
             },
             {
@@ -39,22 +39,22 @@ var menuItems = [
             {
                 id   : 'more',
                 icon : '#more',
-                title: 'Еще',
+                title: 'More',
                 items: [
                     {
                         id   : 'takeGun',
                         icon: '#gun',
-                        title: 'Изъять оружие'
+                        title: 'Seize the weapon'
                     },
                     {
                         id   : 'takeMask',
-                        title: 'Снять маску',
+                        title: 'Take off the mask',
                         icon: '#mask'
                     },
                     {
                         id   : 'followUs',
                         icon : '#follow',
-                        title: 'Вести за собой'
+                        title: 'Lead the way'
                     }
                 ]
             }
@@ -63,166 +63,166 @@ var menuItems = [
     {
         id   : 'run',
         icon   : '#docs',
-        title: 'Документы',
+        title: 'Documents',
         items: [
             {
                 id   : 'showGosDoc',
-                title: 'Удостоверение'
+                title: 'ID'
             },
             {
                 id   : 'showCardId',
-                title: 'Паспорт'
+                title: 'Passport'
             },
             {
                 id   : 'showLic',
-                title: 'Лицензии'
+                title: 'Licences'
             }
         ]
     },
     {
         id   : 'home',
-        title: 'Главная',
+        title: 'Home',
         icon: '#home',
         items: [
             {
                 id   : 'report',
                 icon   : '#report',
-                title: 'Жалоба'
+                title: 'Complaint'
             },
             {
                 id   : 'ask',
                 icon   : '#ask',
-                title: 'Вопрос'
+                title: 'Question'
             },
             {
                 id   : 'faq',
                 icon   : '#faq',
-                title: 'Справка'
+                title: 'Help'
             },
             {
                 id   : 'settings',
                 icon   : '#settings',
-                title: 'Настройки'
+                title: 'Settings'
             }
         ]
     },
     {
         id   : 'carMenu',
-        title: 'Транспорт',
+        title: 'Transport',
         icon: '#car',
         items: [
             {
                 id   : 'leftIndicator',
                 icon   : '#leftArrow',
-                title: 'Поворотник'
+                title: 'Indicator'
             },
             {
                 id   : 'lockV',
                 icon   : '#carLock',
-                title: 'Открыть / Закрыть'
+                title: 'Open / Close'
             },
             {
                 id   : 'rightIndicator',
                 icon   : '#rightArrow',
-                title: 'Поворотник'
+                title: 'Indicator'
             },
             {
                 id   : 'twoIndicator',
                 icon   : '#twoLight',
-                title: 'Аварийка'
+                title: 'Emergency'
             },
         ]
     },
     {
         id   : 'anim',
-        title: 'Анимации',
+        title: 'Animations',
         icon: '#anim',
         items: [
             {
                 id   : 'animDo',
-                title: 'Действия',
+                title: 'Actions',
                 items: [
                     {
                         id   : 'animDo1',
-                        title: 'Поднять руки'
+                        title: 'Put your hands up'
                     },
                     {
                         id   : 'animDo2',
-                        title: 'Воен. приветсвие'
+                        title: 'Military salute'
                     },
                     {
                         id   : 'animDo3',
-                        title: 'Согласиться'
+                        title: 'Accept'
                     },
                     {
                         id   : 'animDo4',
-                        title: 'Отказать'
+                        title: 'Refuse'
                     },
                     {
                         id   : 'animDo5',
-                        title: 'Рука на кобуре'
+                        title: 'Hand on holster'
                     },
                 ]
             },
             {
                 id   : 'animPose',
-                title: 'Позирующие',
+                title: 'Posing',
                 items: [
                     {
                         id   : 'animPose1',
-                        title: 'Распальцовка'
+                        title: 'Swagger'
                     },
                     {
                         id   : 'animPose2',
-                        title: 'Руки в боки'
+                        title: 'Arms at your sides'
                     },
                     {
                         id   : 'animPose3',
-                        title: 'Охранник'
+                        title: 'Security guard'
                     },
                     {
                         id   : 'animPose4',
-                        title: 'Размяться'
+                        title: 'Stretch out'
                     },
                     {
                         id   : 'animPose5',
-                        title: 'Лечь'
+                        title: 'Get down'
                     },
                 ]
             },
             {
                 id   : 'animEmoji',
-                title: 'Эмоции',
+                title: 'Emotions',
                 items: [
                     {
                         id   : 'animEmoji1',
-                        title: 'Радоваться'
+                        title: 'enjoy'
                     },
                     {
                         id   : 'animEmoji2',
-                        title: 'Поддержать'
+                        title: 'Support'
                     },
                     {
                         id   : 'animEmoji3',
-                        title: 'Уважение'
+                        title: 'Respect'
                     },
                     {
                         id   : 'animEmoji4',
-                        title: 'Разочароваться'
+                        title: 'Disappoint'
                     },
                     {
                         id   : 'animEmoji5',
-                        title: 'Дурак'
+                        title: 'Stupid'
                     },
                 ]
             },
             {
                 id   : 'animDance',
-                title: 'Танцы',
+                title: 'Dancing',
                 items: [
                     {
                         id   : 'animDance1',
-                        title: 'Танец-1'
+                        title: 'Dance-1'
                     },
                     {
                         id   : 'animDance2',
@@ -230,65 +230,65 @@ var menuItems = [
                     },
                     {
                         id   : 'animDance3',
-                        title: 'Танец-3'
+                        title: 'Dance-3'
                     },
                     {
                         id   : 'animDance4',
-                        title: 'Танец-4'
+                        title: 'Dance-4'
                     },
                     {
                         id   : 'animDance5',
-                        title: 'Танец-5'
+                        title: 'Dance-5'
                     },
                     {
                         id   : 'animDance6',
-                        title: 'Танец-6'
+                        title: 'Dance-6'
                     },
                     {
                         id   : 'animDance7',
-                        title: 'Танец-7'
+                        title: 'Dance-7'
                     },
                     {
                         id   : 'animDance8',
-                        title: 'Танец-8'
+                        title: 'Dance-8'
                     }
                 ]
             },
             {
                 id   : 'animDoPlayer',
-                title: 'С игроком',
+                title: 'With a player',
                 items: [
                     {
                         id   : 'animDoPlayer4',
-                        title: 'Поцелуй'
+                        title: 'Kiss'
                     },
                     {
                         id   : 'animDoPlayer1',
-                        title: 'Подзороваться 1'
+                        title: 'Gawk 1'
                     },
                     {
                         id   : 'animDoPlayer3',
-                        title: 'Дать пять'
+                        title: 'High-five.'
                     },
                     {
                         id   : 'animDoPlayer2',
-                        title: 'Подзороваться 2'
+                        title: 'Gawk 2'
                     },
                 ]
             },
             {
                 id   : 'animAll',
-                title: 'Все анимации'
+                title: 'All animations'
             },
             {
                 id   : 'animStop',
-                title: 'Остановить'
+                title: 'Stop'
             }
         ]
     },
     {
         id: 'donate',
-        title: 'Донат',
+        title: 'Donate',
         icon: '#money'
     },
     {
