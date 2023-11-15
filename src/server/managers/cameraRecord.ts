@@ -8,10 +8,10 @@ import { vehicles } from "../vehicles";
 import { chat } from "../modules/chat";
 
 chat.registerCommand('camera', (player) => {
-  if(!user.isAdminNow(player)) return player.notify("Доступно только администраторам");
+  if(!user.isAdminNow(player)) return player.notify("Available to administrators only");
   cameraManager(player)
 })
-type cameraSettingsMode = "Обычный"|"Смотреть на ТС"|"Смотреть на игрока";
+type cameraSettingsMode = "Normal"|"Look at the TC"|"Look at the player.";
 export interface cameraSettings {
   pos1: Vector3Mp;
   pos2: Vector3Mp;
@@ -35,9 +35,9 @@ function cameraManager(player:PlayerMp, settings?:cameraSettings){
     duration: 5
   }; else if(player.cameraManagerSettings && !settings) settings = player.cameraManagerSettings
   player.cameraManagerSettings = settings
-  let m = menu.new(player, "Камера", "Настройки");
-  let mods:cameraSettingsMode[] = ["Обычный", "Смотреть на ТС", "Смотреть на игрока"];
-  if(mods.indexOf(settings.mode) == -1) settings.mode = "Обычный";
+  let m = menu.new(player, "Camera," "Settings.");
+  let mods:cameraSettingsMode[] = ["Normal," "Look at the TC," "Look at the player."];
+  if(mods.indexOf(settings.mode) == -1) settings.mode = "Normal";
   m.exitProtect = true;
   m.newItem({
     name: "Режим работы",
@@ -45,78 +45,78 @@ function cameraManager(player:PlayerMp, settings?:cameraSettings){
     list: mods,
     listSelected: mods.indexOf(settings.mode),
     onchange: (value, item) => {
-      player.notify("Режим камеры изменён на: "+item.listSelectedName)
+      player.notify("Camera mode changed to: "+item.listSelectedName)
       settings.mode = <cameraSettingsMode>item.listSelectedName;
       if(settings.target){
         settings.target = null;
-        player.notify("Цель слежки была сброшена")
+        player.notify("The target of the stakeout has been dropped")
       }
       cameraManager(player, settings)
     }
   })
   m.newItem({
-    name: "~r~Сбросить настройки",
+    name: "~r~Reset settings",
     onpress: () => {
-      user.accept(player, "Сбросить настройки?").then(status => {
+      user.accept(player, "Reset the settings?").then(status => {
         if(!status) return cameraManager(player, settings);
         settings = null
         player.cameraManagerSettings = null
-        player.notify("Настройки сброшены")
+        player.notify("Settings reset")
         cameraManager(player, settings)
       })
     }
   })
   m.newItem({
-    name: "~b~Начальная камера"
+    name: "~b~Initial camera"
   })
   m.newItem({
-    name: "Позиция",
-    desc: "Координата, где вы сейчас",
-    more: settings.pos1 ? "~g~Установлена" : "~r~Не установлена",
+    name: "Position",
+    desc: "Coordinate where you are now",
+    more: settings.pos1 ? "~g~Installed" : "~r~Uninstalled",
     onpress: () => {
       if(settings.pos1){
-        user.accept(player, "Сбросить точку?").then(status => {
+        user.accept(player, "Reset the point?").then(status => {
           if(!status) return cameraManager(player, settings);
           settings.pos1 = null
-          player.notify("Положение камеры сброшено")
+          player.notify("Camera position reset")
           cameraManager(player, settings)
         })
       } else {
         settings.pos1 = new mp.Vector3(player.position.x, player.position.y, player.position.z)
-        player.notify("Положение камеры установлено")
+        player.notify("Camera position set")
         cameraManager(player, settings)
       }
     }
   })
   m.newItem({
-    name: "Направление",
-    more: settings.rot1 ? "~g~Установлено" : "~r~Не установлено",
+    name: "Direction",
+    more: settings.rot1 ? "~g~Installed" : "~r~Uninstalled",
     onpress: () => {
       if(settings.rot1){
-        user.accept(player, "Сбросить точку?").then(status => {
+        user.accept(player, "Reset the point?").then(status => {
           if(!status) return cameraManager(player, settings);
           settings.rot1 = null
-          player.notify("Положение камеры сброшено")
+          player.notify("Camera position reset")
           cameraManager(player, settings)
         })
       } else {
         mp.events.callClient(player, "camera:rotationCamera").then((pos) => {
           //console.log(pos)
           settings.rot1 = new mp.Vector3(pos.x, pos.y, pos.z)
-          player.notify("Положение камеры установлено")
+          player.notify("Camera position set")
           cameraManager(player, settings)
         })
       }
     }
   })
   m.newItem({
-    name: "~b~Конечная камера"
+    name: "~b~End cell"
   })
 
 
   m.newItem({
-    name: "Позиция",
-    desc: "Координата, где вы сейчас",
+    name: "Position",
+    desc: "Coordinate where you are now",
     more: settings.pos2 ? "~g~Установлена" : "~r~Не установлена",
     onpress: () => {
       if(settings.pos2){
