@@ -67,8 +67,8 @@ let walkieState = false;
 
 mp.events.add('setTag', (tag: string) => {
   tag = methods.removeQuotes(tag);
-  if (tag == '') mp.game.ui.notifications.show(`~y~Вы удалили тег`);
-  else mp.game.ui.notifications.show(`~y~Вы установили тег - ~s~${tag}`);
+  if (tag == '') mp.game.ui.notifications.show(`~y~You removed the tag`);
+  else mp.game.ui.notifications.show(`~y~You've set the tag - ~s~${tag}`);
   user.set('tag', tag);
   user.setData('tag', tag);
   user.saveAccount();
@@ -89,8 +89,8 @@ mp.events.add("report", () => {
   report()
 })
 async function report() {
-  if (reportWait) return mp.game.ui.notifications.show('~r~Подождите 60 секунд');
-  let text = await UIMenu.Menu.GetUserInput('Опишите жалобу', '', 300);
+  if (reportWait) return mp.game.ui.notifications.show('~r~Wait 60 seconds.');
+  let text = await UIMenu.Menu.GetUserInput('Describe the complaint', '', 300);
   if (text != '') {
     mp.events.callRemote('server:sendReport', text);
     reportWait = true;
@@ -161,17 +161,17 @@ let menuList = {
     );
 
     let buyHouseItem = menu.AddMenuItem(
-      `Купить квартиру за ~g~$${methods.numberFormat(h.get('price'))}`
+      `Buy a flat for ~g~$${methods.numberFormat(h.get('price'))}`
     );
     let enterHouseItem = menu.AddMenuItem('~g~Осмотреть квартиру');
 
     if (user.get('job') == 'mail' || user.get('job') == 'mail2') {
       if (!(await Container.Has(h.get('id'), 'isMail2')))
-        menu.AddMenuItem('~g~Положить почту').doName = h.get('id');
-      else menu.AddMenuItem('~o~Дом уже обслуживался');
+        menu.AddMenuItem('~g~Put the mail down').doName = h.get('id');
+      else menu.AddMenuItem('~o~The house was already serviced');
     }
 
-    let closeItem = menu.AddMenuItem('~r~Закрыть');
+    let closeItem = menu.AddMenuItem('~r~Close');
 
     menu.ItemSelect.on((item) => {
       UIMenu.Menu.HideMenu();
@@ -188,16 +188,16 @@ let menuList = {
   showCondoInMenu: function (h: Map<any, any>) {
     let menu = UIMenu.Menu.Create(
       `№${h.get('id')}`,
-      `~b~Адрес: ~s~${h.get('address')} ${h.get('id')}`
+      `~b~Address: ~s~${h.get('address')} ${h.get('id')}`
     );
 
     let setPinItem: MenuItemClient = null;
     let resetPinItem: MenuItemClient = null;
     if (h.get('id_user') == user.getCacheData().get('id') && h.get('pin') > 0)
-      setPinItem = menu.AddMenuItem('~y~Сменить пинкод');
+      setPinItem = menu.AddMenuItem('~y~Change pin code');
 
-    let exitHouseItem = menu.AddMenuItem('~g~Выйти из квартиры');
-    let closeItem = menu.AddMenuItem('~r~Закрыть');
+    let exitHouseItem = menu.AddMenuItem('~g~Get out of the flat');
+    let closeItem = menu.AddMenuItem('~r~Close');
 
     menu.ItemSelect.on(async (item) => {
       UIMenu.Menu.HideMenu();
@@ -205,16 +205,16 @@ let menuList = {
         condo.exit(h.get('x'), h.get('y'), h.get('z'));
       }
       if (item == setPinItem) {
-        let pass = methods.parseInt(await UIMenu.Menu.GetUserInput('Пароль', '', 5));
+        let pass = methods.parseInt(await UIMenu.Menu.GetUserInput('Password', '', 5));
         if (pass < 1) {
-          mp.game.ui.notifications.show('~r~Пароль должен быть больше нуля');
+          mp.game.ui.notifications.show('~r~The password must be greater than zero');
           return false;
         }
-        mp.game.ui.notifications.show('~g~Ваш новый пароль: ~s~' + pass);
+        mp.game.ui.notifications.show('~g~Your new password: ~s~' + pass);
         condo.updatePin(h.get('id'), pass);
       }
       if (item == resetPinItem) {
-        mp.game.ui.notifications.show('~g~Пароль сброшен');
+        mp.game.ui.notifications.show('~g~Password reset');
         condo.updatePin(h.get('id'), 0);
       }
     });
@@ -225,27 +225,27 @@ let menuList = {
       ``,
       `~b~Адрес: ~s~${h.get('address')} ${h.get('id')}`, false, false, false, 'house', 'house'
     );
-    let infoItem = menu.AddMenuItem(`~b~Владелец:~s~ ${h.get('name_user')}`);
-    let enterHouseItem = menu.AddMenuItem('~g~Войти');
+    let infoItem = menu.AddMenuItem(`~b~Owner:~s~ ${h.get('name_user')}`);
+    let enterHouseItem = menu.AddMenuItem('~g~Sign in');
 
     if (user.get('job') == 'mail' || user.get('job') == 'mail2') {
       if (!(await Container.Has(h.get('id'), 'isMail2')))
-        menu.AddMenuItem('~g~Положить почту').doName = h.get('id');
-      else menu.AddMenuItem('~o~Дом уже обслуживался');
+        menu.AddMenuItem('~g~Put the mail').doName = h.get('id');
+      else menu.AddMenuItem('~o~The house was already serviced');
     }
 
-    let closeItem = menu.AddMenuItem('~r~Закрыть');
+    let closeItem = menu.AddMenuItem('~r~Close');
 
     menu.ItemSelect.on(async (item) => {
       UIMenu.Menu.HideMenu();
       if (item == enterHouseItem) {
         if (h.get('pin') > 0 && user.get('id') != h.get('id_user')) {
-          if (passProtect >= passProtectMax) return user.notify("~r~Подождите перед вводом пароля");
+          if (passProtect >= passProtectMax) return user.notify("~r~Wait before entering the password");
           passProtect++;
-          let pass = methods.parseInt(await UIMenu.Menu.GetUserInput('Введите пинкод', '', 10, 'password'));
+          let pass = methods.parseInt(await UIMenu.Menu.GetUserInput('Enter the pin code', '', 10, 'password'));
           if (pass == h.get('pin'))
             condo.enter(h.get('id'), h.get('int_x'), h.get('int_y'), h.get('int_z'));
-          else mp.game.ui.notifications.show('~r~Вы ввели не правильный пинкод');
+          else mp.game.ui.notifications.show('~r~You have entered the wrong pin code');
         } else condo.enter(h.get('id'), h.get('int_x'), h.get('int_y'), h.get('int_z'));
       }
 
@@ -262,7 +262,7 @@ let menuList = {
     let buyHouseItem = menu.AddMenuItem(
       `Купить склад за ~g~$${methods.numberFormat(h.get('price'))}`
     );
-    let closeItem = menu.AddMenuItem('~r~Закрыть');
+    let closeItem = menu.AddMenuItem('~r~Close');
 
     menu.ItemSelect.on((item) => {
       UIMenu.Menu.HideMenu();
@@ -277,21 +277,21 @@ let menuList = {
       `№${h.get('id')}`,
       `~b~Адрес: ~s~${h.get('address')} ${h.get('id')}`
     );
-    let infoItem = menu.AddMenuItem(`~b~Владелец:~s~ ${h.get('user_name')}`);
-    let enterHouseItem = menu.AddMenuItem('~g~Войти');
-    let closeItem = menu.AddMenuItem('~r~Закрыть');
+    let infoItem = menu.AddMenuItem(`~b~Owner:~s~ ${h.get('user_name')}`);
+    let enterHouseItem = menu.AddMenuItem('~g~Sign in');
+    let closeItem = menu.AddMenuItem('~r~Close');
 
     menu.ItemSelect.on(async (item) => {
       UIMenu.Menu.HideMenu();
       if (item == enterHouseItem) {
         if (user.get('id') != h.get('user_id')) {
-          if (passProtect >= passProtectMax) return user.notify("~r~Подождите перед вводом пароля");
+          if (passProtect >= passProtectMax) return user.notify("~r~Wait before entering the password");
           passProtect++;
-          let pass = methods.parseInt(await UIMenu.Menu.GetUserInput('Введите пинкод', '', 10, 'password'));
+          let pass = methods.parseInt(await UIMenu.Menu.GetUserInput('Enter the pin code', '', 10, 'password'));
           if (pass == h.get('pin1')) stock.enter(h.get('id'));
           else {
-            stock.addLog(user.get('rp_name'), `Ввёл не правильно пинкод (${pass})`, h.get('id'));
-            mp.game.ui.notifications.show('~r~Вы ввели не правильный пинкод');
+            stock.addLog(user.get('rp_name'), `I entered the wrong pin code (${pass})`, h.get('id'));
+            mp.game.ui.notifications.show('~r~You have entered the wrong pin code');
           }
         } else stock.enter(h.get('id'));
       }
@@ -301,11 +301,11 @@ let menuList = {
   showStockInMenu: function (h: Map<any, any>) {
     let menu = UIMenu.Menu.Create(
       `№${h.get('id')}`,
-      `~b~Адрес: ~s~${h.get('address')} ${h.get('id')}`
+      `~b~Address: ~s~${h.get('address')} ${h.get('id')}`
     );
 
-    let exitHouseItem = menu.AddMenuItem('~g~Выйти');
-    let closeItem = menu.AddMenuItem('~r~Закрыть');
+    let exitHouseItem = menu.AddMenuItem('~g~Get out');
+    let closeItem = menu.AddMenuItem('~r~Close');
 
     menu.ItemSelect.on(async (item) => {
       UIMenu.Menu.HideMenu();
@@ -318,21 +318,21 @@ let menuList = {
   showApartmentListMenu: function (countFloor: number, buildId: number) {
     //TODO TELEPORT BLACKOUT
 
-    let menu = UIMenu.Menu.Create(``, `~b~Меню апартаментов`, false, false, false, 'house', 'house');
+    let menu = UIMenu.Menu.Create(``, `~b~Apartment Menu`, false, false, false, 'house', 'house');
 
     let exitItem = null;
-    if (mp.players.local.dimension != 0) exitItem = menu.AddMenuItem(`~g~Улица`);
+    if (mp.players.local.dimension != 0) exitItem = menu.AddMenuItem(`~g~Street`);
 
-    for (let i = 1; i <= countFloor; i++) menu.AddMenuItem(`Этаж №${i}`).floor = i;
+    for (let i = 1; i <= countFloor; i++) menu.AddMenuItem(`Floor №${i}`).floor = i;
 
     if (buildId == 32) {
-      let roofItem = menu.AddMenuItem(`~g~Крыша`);
+      let roofItem = menu.AddMenuItem(`~g~Roof`);
       roofItem.x = 387.8792;
       roofItem.y = -60.072224;
       roofItem.z = 121.5355;
     }
 
-    let closeItem = menu.AddMenuItem('~r~Закрыть');
+    let closeItem = menu.AddMenuItem('~r~Close');
 
     menu.ItemSelect.on((item, index) => {
       UIMenu.Menu.HideMenu();
@@ -352,22 +352,22 @@ let menuList = {
   showApartmentInfoMenu: function (data: Map<any, any>) {
     let menu = UIMenu.Menu.Create(
       ``,
-      `~b~Владелец: ~s~${data.get('user_id') == 0 ? 'Государство' : data.get('user_name')}`, false, false, false, 'house', 'house'
+      `~b~Owner: ~s~${data.get('user_id') == 0 ? 'State' : data.get('user_name')}`, false, false, false, 'house', 'house'
     );
 
-    let exitItem = menu.AddMenuItem(`~g~Выйти`);
+    let exitItem = menu.AddMenuItem(`~g~Get out`);
     let buyItem: MenuItemClient = null;
 
     if (data.get('user_id') == 0)
       buyItem = menu.AddMenuItem(
-        `~g~Купить`,
-        `Цена: ~g~$${methods.numberFormat(data.get('price'))}`
+        `~g~Buy`,
+        `Price: ~g~$${methods.numberFormat(data.get('price'))}`
       );
 
     if (data.get('pin') != 0 && data.get('user_id') == user.get('id'))
-      menu.AddMenuItem(`~y~Сменить пинкод`).doName = 'changePin';
+      menu.AddMenuItem(`~y~Change pin code`).doName = 'changePin';
 
-    let closeItem = menu.AddMenuItem('~r~Закрыть');
+    let closeItem = menu.AddMenuItem('~r~Close');
 
     menu.ItemSelect.on(async (item) => {
       UIMenu.Menu.HideMenu();
@@ -375,29 +375,29 @@ let menuList = {
         mp.events.callRemote('server:events:showApartmentListMenu', data.get('build_id'));
       else if (item == buyItem) mp.events.callRemote('server:apartments:buy', data.get('id'));
       else if (item.doName == 'changePin') {
-        let pass = methods.parseInt(await UIMenu.Menu.GetUserInput('Пинкод', '', 5));
+        let pass = methods.parseInt(await UIMenu.Menu.GetUserInput('Pincode', '', 5));
         if (pass == 0) {
-          mp.game.ui.notifications.show('~r~Можно ставить только цифры');
+          mp.game.ui.notifications.show('~r~You can only put numbers');
           return;
         }
-        mp.game.ui.notifications.show('~g~Ваш новый пинкод: ~s~' + pass);
+        mp.game.ui.notifications.show('~g~Your new pin code: ~s~' + pass);
         mp.events.callRemote('server:apartments:updatePin', data.get('id'), pass);
       } else if (item.doName == 'resetPin') {
-        mp.game.ui.notifications.show('~g~Пароль сброшен');
+        mp.game.ui.notifications.show('~g~Password reset');
         mp.events.callRemote('server:apartments:updatePin', data.get('id'), 0);
       }
     });
   },
 
   showApartmentFloorListMenu: function (data: [number, string][]) {
-    let menu = UIMenu.Menu.Create(``, `~b~Список апартаментов`, false, false, false, 'house', 'house');
+    let menu = UIMenu.Menu.Create(``, `~b~Apartment list`, false, false, false, 'house', 'house');
 
     data.forEach(function (item, i, arr) {
-      let ownerName = item[1] == '' ? 'Государство' : item[1];
-      menu.AddMenuItem(`Апартаменты №${item[0]}`, `~b~Владелец: ~s~${ownerName}`).apartId =
+      let ownerName = item[1] == '' ? 'State' : item[1];
+      menu.AddMenuItem(`Apartments №${item[0]}`, `~b~Owner: ~s~${ownerName}`).apartId =
         item[0];
     });
-    let closeItem = menu.AddMenuItem('~r~Закрыть');
+    let closeItem = menu.AddMenuItem('~r~Close');
 
     menu.ItemSelect.on(async (item, index) => {
       UIMenu.Menu.HideMenu();
@@ -409,13 +409,13 @@ let menuList = {
 
       // !todo -> if (pin != 0 && item[1] != '') {
       if (pin != 0) {
-        if (passProtect >= passProtectMax) return user.notify("~r~Подождите перед вводом пароля");
+        if (passProtect >= passProtectMax) return user.notify("~r~Wait before entering the password");
         passProtect++;
-        let pass = methods.parseInt(await UIMenu.Menu.GetUserInput('Введите пинкод', '', 10, 'password'));
+        let pass = methods.parseInt(await UIMenu.Menu.GetUserInput('Enter the pin code', '', 10, 'password'));
         if (pass == pin)
           mp.events.callRemote('server:apartments:enter', methods.parseInt(item.apartId));
         else {
-          mp.game.ui.notifications.show('~r~Вы ввели не правильный пинкод');
+          mp.game.ui.notifications.show('~r~You have entered the wrong pin code');
         }
       } else mp.events.callRemote('server:apartments:enter', methods.parseInt(item.apartId));
     });
@@ -434,16 +434,16 @@ let menuList = {
     // !todo -> if (data.has('job') > 0) ownerName = methods.getCompanyName(data.get('job'));
     if (data.get('job') > 0) ownerName = methods.getCompanyName(data.get('job'));
 
-    let menu = UIMenu.Menu.Create(`Транспорт`, `~b~Владелец: ~s~${ownerName}`);
+    let menu = UIMenu.Menu.Create(`Transport`, `~b~Owner: ~s~${ownerName}`);
 
     if (data.get('job') != 'bgstar' && data.get('job') != 'sunb' && data.get('job') != 'water') {
       switch (user.get('job')) {
         case 'trucker1':
           if (vInfo.class_name == 'Vans') {
-            menu.AddMenuItem('~g~Список заказов').doName = 'trucker:getList';
-            menu.AddMenuItem('~b~Частота рации:~s~ ').SetRightLabel('266.001');
+            menu.AddMenuItem('~g~Order list').doName = 'trucker:getList';
+            menu.AddMenuItem('~b~Radio frequency:~s~ ').SetRightLabel('266.001');
             if (trucker.isProcess())
-              menu.AddMenuItem('~r~Завершить досрочно рейс', 'Штраф ~r~$500').doName =
+              menu.AddMenuItem('~r~To complete an early flight', 'Fines ~r~$500').doName =
                 'trucker:stop';
           }
           break;
@@ -455,10 +455,10 @@ let menuList = {
             vInfo.display_name == 'Mule3' ||
             vInfo.display_name == 'Pounder'
           ) {
-            menu.AddMenuItem('~g~Список заказов').doName = 'trucker:getList';
-            menu.AddMenuItem('~b~Частота рации:~s~ ').SetRightLabel('266.002');
+            menu.AddMenuItem('~g~Order list').doName = 'trucker:getList';
+            menu.AddMenuItem('~b~Radio frequency:~s~ ').SetRightLabel('266.002');
             if (trucker.isProcess())
-              menu.AddMenuItem('~r~Завершить досрочно рейс', 'Штраф ~r~$500').doName =
+              menu.AddMenuItem('~r~To complete an early flight', 'Fines ~r~$500').doName =
                 'trucker:stop';
           }
           break;
@@ -468,7 +468,7 @@ let menuList = {
             vInfo.display_name == 'Packer' ||
             vInfo.display_name == 'Phantom'
           ) {
-            menu.AddMenuItem('~g~Список заказов').doName = 'trucker:getList';
+            menu.AddMenuItem('~g~Order list').doName = 'trucker:getList';
             menu.AddMenuItem('~b~Частота рации:~s~ ').SetRightLabel('266.003');
             if (trucker.isProcess())
               menu.AddMenuItem('~r~Завершить досрочно рейс', 'Штраф ~r~$500').doName =
