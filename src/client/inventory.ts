@@ -167,8 +167,8 @@ const inventory = {
   
   equipCloth: (id: number, itemId: number, prefix: number, number: number, keyId: number, countItems = 1) => {
     if (prefix != user.getSex()) {
-      if (prefix == 1) mp.game.ui.notifications.show('~r~Вы не можете на себя надеть женскую одежду');
-      else mp.game.ui.notifications.show('~r~Вы не можете на себя надеть мужскую одежду');
+      if (prefix == 1) mp.game.ui.notifications.show('~r~You cant wear womens clothes.');
+      else mp.game.ui.notifications.show('~r~You cant wear mens clothes.');
       return;
     }
   
@@ -208,8 +208,8 @@ const inventory = {
   
   equipProp: (id: number, itemId: number, prefix: number, number: number, keyId: number) =>{
     if (prefix != user.getSex()) {
-      if (prefix == 1) mp.game.ui.notifications.show('~r~Вы не можете на себя надеть женскую одежду');
-      else mp.game.ui.notifications.show('~r~Вы не можете на себя надеть мужскую одежду');
+      if (prefix == 1) mp.game.ui.notifications.show('~r~You cant wear womens clothes.');
+      else mp.game.ui.notifications.show('~r~You cant wear womens clothes.');
       return;
     }
   
@@ -245,7 +245,7 @@ const inventory = {
     if (isAmoutCheck) {
       let amount = await inventory.getInvAmount(user_id, inventory.types.Player);
       if (items.getItemAmountById(itemId) + amount > inventory.maxAmount(1, user.get('id'))) {
-        mp.game.ui.notifications.show('~r~Инвентарь заполнен');
+        mp.game.ui.notifications.show('~r~The inventory is complete');
         inventory.open()
         return;
       }
@@ -587,7 +587,7 @@ const inventory = {
         user.setData('phone', 0);
         user.setData('phone_code', 0);
   
-        mp.game.ui.notifications.show('~g~Вы убрали телефон');
+        mp.game.ui.notifications.show('~g~You put the phone away');
         break;
       case 42:
         inventory.addItemServer(
@@ -603,7 +603,7 @@ const inventory = {
   
         user.setData('business_id', 0);
   
-        mp.game.ui.notifications.show('~g~Вы убрали ключи от офиса');
+        mp.game.ui.notifications.show('~g~You removed the keys to the office');
         break;
       case 43:
         inventory.addItemServer(
@@ -619,7 +619,7 @@ const inventory = {
   
         user.setData('id_house', 0);
   
-        mp.game.ui.notifications.show('~g~Вы убрали ключи от дома');
+        mp.game.ui.notifications.show('~g~You took away the keys to the house');
         break;
       case 44:
         inventory.addItemServer(
@@ -635,32 +635,32 @@ const inventory = {
   
         user.setData('apartment_id', 0);
   
-        mp.game.ui.notifications.show('~g~Вы убрали ключи от квартиры');
+        mp.game.ui.notifications.show('~g~You removed the keys to the flat');
         break;
       case 50:
         mp.events.callSocket('server:inventory:unEquip', 50);
         break;
       case 138:
         if (user.getMoney() < 1) {
-          mp.game.ui.notifications.show('~r~У Вас нет налички');
+          mp.game.ui.notifications.show('~r~You don't have any cash');
           return;
         }
         inventory.addItemServer(138, 1, inventory.types.Player, user_id, 1, -1, -1, -1);
   
         user.removeCashMoney(1);
   
-        mp.game.ui.notifications.show('~g~Вы убрали $1 в инвентарь');
+        mp.game.ui.notifications.show('~g~You put $1 in your inventory');
         break;
       case 139:
         if (user.getMoney() < 100) {
-          mp.game.ui.notifications.show('~r~У Вас нет налички');
+          mp.game.ui.notifications.show('~r~You dont have any cash');
           return;
         }
         inventory.addItemServer(138, 1, inventory.types.Player, user_id, 100, -1, -1, -1);
   
         user.removeCashMoney(100);
   
-        mp.game.ui.notifications.show('~g~Вы убрали $100 в инвентарь');
+        mp.game.ui.notifications.show('~g~You put $100 in your inventory');
         break;
       case 140:
       case 141:
@@ -669,11 +669,11 @@ const inventory = {
         money = methods.parseInt(money);
   
         if (user.getMoney() < money) {
-          mp.game.ui.notifications.show('~r~У Вас нет столько налички');
+          mp.game.ui.notifications.show('~r~You dont have that much cash');
           return;
         }
         if (money <= 0) {
-          mp.game.ui.notifications.show('~r~У Вас нет налички');
+          mp.game.ui.notifications.show('~r~You dont have any cash');
           return;
         }
   
@@ -698,7 +698,7 @@ const inventory = {
         }
   
         user.removeCashMoney(money);
-        mp.game.ui.notifications.show(`~g~Вы убрали $${methods.numberFormat(money)} в инвентарь`);
+        mp.game.ui.notifications.show(`~g~You removed $${methods.numberFormat(money)} in inventory`);
         break;
       case 27:
       case 28:
@@ -756,7 +756,7 @@ const inventory = {
           }
   
           inventory.removeAllAmmo(itemId);
-          mp.game.ui.notifications.show('~g~Вы убрали патроны в инвентарь');
+          mp.game.ui.notifications.show('~g~You ve removed the ammo from your inventory.');
         }
         break;
       default:
@@ -848,7 +848,7 @@ const inventory = {
     let amount = await inventory.getInvAmount(user_id, inventory.types.Player);
     let amountMax = await inventory.getInvAmountMax(user_id, inventory.types.Player);
     if (items.getItemAmountById(itemId) + amount > amountMax) {
-      mp.game.ui.notifications.show('~r~Инвентарь заполнен');
+      mp.game.ui.notifications.show('~r~The inventory is complete');
       inventory.open()
       return;
     }
@@ -864,7 +864,7 @@ const inventory = {
     let amountMax = await inventory.getInvAmountMax(user_id, inventory.types.Player);
     //mp.console.logInfo(amount, amountMax, "amounts");
     if (items.getItemAmountById(itemId) + amount > amountMax) {
-      mp.game.ui.notifications.show('~r~Инвентарь заполнен');
+      mp.game.ui.notifications.show('~r~The inventory is complete');
       inventory.open()
       return;
     }
@@ -884,22 +884,22 @@ const inventory = {
     inventory.updateAmount(user_id, inventory.types.Player);
     if (ownerType == inventory.types.World) inventory.deleteItemProp(id);
     if (!notify) return;
-    mp.game.ui.notifications.show(`~g~Вы взяли \"${items.getItemNameById(itemId)}\"`);
+    mp.game.ui.notifications.show(`~g~You have taken \"${items.getItemNameById(itemId)}\"`);
     chat.sendMeCommand(`взял \"${items.getItemNameById(itemId)}\"`);
   },
 
   giveItem: async (id: number, itemId: number, playerId: number, notify = true) => {
     if(itemId == 50){
-      return mp.game.ui.notifications.show("~r~Банковскую карту нельзя передавать");
+      return mp.game.ui.notifications.show("~r~A bank card cannot be handed over");
     }
     if(itemId >= 138 && itemId <= 141){
-      return mp.game.ui.notifications.show("~r~Пачку денег нельзя передавать");
+      return mp.game.ui.notifications.show("~r~You cant hand over a wad of money");
     }
     let user_id = user.get('id');
     let amount = await inventory.getInvAmount(playerId, inventory.types.Player);
     let amountMax = await inventory.getInvAmountMax(playerId, inventory.types.Player);
     if (items.getItemAmountById(itemId) + amount > amountMax) {
-      mp.game.ui.notifications.show('~r~Инвентарь заполнен');
+      mp.game.ui.notifications.show('~r~The inventory is complete');
       inventory.open()
       return;
     }
@@ -913,22 +913,22 @@ const inventory = {
   
     if (!notify) return;
     mp.game.ui.notifications.show(`~g~Вы передали \"${items.getItemNameById(itemId)}\" игроку`);
-    chat.sendMeCommand(`передал \"${items.getItemNameById(itemId)}\" человеку рядом`);
+    chat.sendMeCommand(`handed over \"${items.getItemNameById(itemId)}\" the person next to me`);
   },
   
   dropItemToVehicle: async (id: number, itemId: number, number: string, notify = true) => {
     if(itemId == 50){
-      return mp.game.ui.notifications.show("~r~Банковскую карту нельзя передавать");
+      return mp.game.ui.notifications.show("~r~A bank card cannot be handed over");
     }
     if(itemId >= 138 && itemId <= 141){
-      return mp.game.ui.notifications.show("~r~Пачку денег нельзя передавать");
+      return mp.game.ui.notifications.show("~r~You can't hand over a wad of money");
     }
     let vId = inventory.convertNumberToHash(number);
     let user_id = user.get('id');
     let amount = await inventory.getInvAmount(vId, inventory.types.Vehicle);
     let amountMax = await inventory.getInvAmountMax(vId, inventory.types.Vehicle);
     if (items.getItemAmountById(itemId) + amount > amountMax) {
-      mp.game.ui.notifications.show('~r~В багажнике нет места');
+      mp.game.ui.notifications.show('~r~There no room in the boot');
       return;
     }
     inventory.updateItemOwnerServer(id, inventory.types.Vehicle, number);
@@ -936,22 +936,22 @@ const inventory = {
     inventory.updateAmount(user_id, inventory.types.Player);
   
     if (!notify) return;
-    mp.game.ui.notifications.show(`~g~Вы положили \"${items.getItemNameById(itemId)}\" в багажник`);
-    chat.sendMeCommand(`положил \"${items.getItemNameById(itemId)}\" в багажник`);
+    mp.game.ui.notifications.show(`~g~You put \"${items.getItemNameById(itemId)}\" in the boot`);
+    chat.sendMeCommand(`put \"${items.getItemNameById(itemId)}\" in the boot`);
   },
   
   dropItemToStockFraction: async (id: number, itemId: number, ownerId: number, notify = true) => {
     if(itemId == 50){
-      return mp.game.ui.notifications.show("~r~Банковскую карту нельзя передавать");
+      return mp.game.ui.notifications.show("~r~A bank card cannot be handed over");
     }
     if(itemId >= 138 && itemId <= 141){
-      return mp.game.ui.notifications.show("~r~Пачку денег нельзя передавать");
+      return mp.game.ui.notifications.show("~r~You can't hand over a wad of money");
     }
     let user_id = user.get('id');
     let amount = await inventory.getInvAmount(ownerId, inventory.types.StockFraction);
     let amountMax = await inventory.getInvAmountMax(ownerId, inventory.types.StockFraction);
     if (items.getItemAmountById(itemId) + amount > amountMax) {
-      mp.game.ui.notifications.show('~r~На складе нет места');
+      mp.game.ui.notifications.show('~r~There no room in the warehouse');
       return;
     }
   
@@ -960,22 +960,22 @@ const inventory = {
     inventory.updateAmount(user_id, inventory.types.Player);
   
     if (!notify) return;
-    mp.game.ui.notifications.show(`~g~Вы положили \"${items.getItemNameById(itemId)}\" на склад`);
-    chat.sendMeCommand(`положил \"${items.getItemNameById(itemId)}\" на склад`);
+    mp.game.ui.notifications.show(`~g~You put \"${items.getItemNameById(itemId)}\" in store`);
+    chat.sendMeCommand(`put \"${items.getItemNameById(itemId)}\" in store`);
   },
   
   dropItemToFridge: async (id: number, itemId: number, ownerId: number, notify = true) => {
     if(itemId == 50){
-      return mp.game.ui.notifications.show("~r~Банковскую карту нельзя передавать");
+      return mp.game.ui.notifications.show("~r~A bank card cannot be handed over");
     }
     if(itemId >= 138 && itemId <= 141){
-      return mp.game.ui.notifications.show("~r~Пачку денег нельзя передавать");
+      return mp.game.ui.notifications.show("~r~You can't hand over a wad of money");
     }
     let user_id = user.get('id');
     let amount = await inventory.getInvAmount(ownerId, inventory.types.Fridge);
     let amountMax = await inventory.getInvAmountMax(ownerId, inventory.types.Fridge);
     if (items.getItemAmountById(itemId) + amount > amountMax) {
-      mp.game.ui.notifications.show('~r~В холодильнике нет места');
+      mp.game.ui.notifications.show('~r~No room in the fridge');
       return;
     }
   
@@ -985,7 +985,7 @@ const inventory = {
   
     if (!notify) return;
     mp.game.ui.notifications.show(
-      `~g~Вы положили \"${items.getItemNameById(itemId)}\" в холодильник`
+      `~g~You put \"${items.getItemNameById(itemId)}\" in the fridge`
     );
     chat.sendMeCommand(`положил \"${items.getItemNameById(itemId)}\" в холодильник`);
   },
