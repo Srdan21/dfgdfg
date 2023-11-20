@@ -33,34 +33,34 @@ const createRulesObject = (title: string, type: string, winNumbers: number[]): R
 });
 
 const rules: {[key: string]: RuleInterface} = {
-  '0-1-37': createRulesObject('Трио', 'trio', [0, 1, 37]),
-  '1-36-37': createRulesObject('Трио', 'trio', [1, 36, 37]),
-  '1-2-36': createRulesObject('Трио', 'trio', [1, 2, 36]),
-  '0-37': createRulesObject('Сплит', 'split', [0, 37]),
-  '1-37': createRulesObject('Сплит', 'split', [1, 37]),
-  '1-36': createRulesObject('Сплит', 'split', [1, 36]),
-  '2-36': createRulesObject('Сплит', 'split', [2, 36]),
-  '50': createRulesObject('Сплит', 'split', [36, 37]),
-  '36-37': createRulesObject('Сплит', 'split', [36, 37]),
+  '0-1-37': createRulesObject('Trio', 'trio', [0, 1, 37]),
+  '1-36-37': createRulesObject('Trio', 'trio', [1, 36, 37]),
+  '1-2-36': createRulesObject('Trio', 'trio', [1, 2, 36]),
+  '0-37': createRulesObject('Split', 'split', [0, 37]),
+  '1-37': createRulesObject('Split', 'split', [1, 37]),
+  '1-36': createRulesObject('Split', 'split', [1, 36]),
+  '2-36': createRulesObject('Split', 'split', [2, 36]),
+  '50': createRulesObject('Split', 'split', [36, 37]),
+  '36-37': createRulesObject('Split', 'split', [36, 37]),
   '36': createRulesObject('Double zero', 'split', [36]),
   '37': createRulesObject('Zero', 'split', [37]),
-  '38': createRulesObject('Дюжина 1', 'dozen', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]),
-  '39': createRulesObject('Дюжина 2', 'dozen', [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]),
-  '40': createRulesObject('Дюжина 3', 'dozen', [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]),
-  '41': createRulesObject('Малые', 'small', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]),
-  '42': createRulesObject('Четные', 'even', [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35]),
-  '43': createRulesObject('Красные', 'red', [0, 2, 4, 6, 8, 11, 13, 15, 17, 18, 20, 22, 24, 26, 29, 31, 33, 35]),
-  '44': createRulesObject('Черные', 'black', [1, 3, 5, 7, 9, 10, 12, 14, 16, 19, 21, 23, 25, 27, 28, 30, 32, 34]),
-  '45': createRulesObject('Нечетные', 'odd', [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34]),
-  '46': createRulesObject('Большие', 'big', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]),
-  '47': createRulesObject('Колонна 1', 'column', [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33]),
-  '48': createRulesObject('Колонна 2', 'column', [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34]),
-  '49': createRulesObject('Колонна 3', 'column', [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35]),
-  '50-51': createRulesObject('5 номеров', 'five-numbers', [37, 38, 0, 1, 2])
+  '38': createRulesObject('Dozen 1', 'dozen', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]),
+  '39': createRulesObject('Dozen 2', 'dozen', [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]),
+  '40': createRulesObject('Dozen 3', 'dozen', [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]),
+  '41': createRulesObject('Small', 'small', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]),
+  '42': createRulesObject('Even', 'even', [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35]),
+  '43': createRulesObject('Red', 'red', [0, 2, 4, 6, 8, 11, 13, 15, 17, 18, 20, 22, 24, 26, 29, 31, 33, 35]),
+  '44': createRulesObject('Black', 'black', [1, 3, 5, 7, 9, 10, 12, 14, 16, 19, 21, 23, 25, 27, 28, 30, 32, 34]),
+  '45': createRulesObject('Odd', 'odd', [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34]),
+  '46': createRulesObject('Big', 'big', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]),
+  '47': createRulesObject('Column 1', 'column', [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33]),
+  '48': createRulesObject('Column 2', 'column', [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34]),
+  '49': createRulesObject('Column 3', 'column', [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35]),
+  '50-51': createRulesObject('5 rooms', 'five-numbers', [37, 38, 0, 1, 2])
 };
 
 for (let i = 0; i < 36; i++) {
-  rules[i] = createRulesObject(`${i + 1} ${redNumbers.includes(i + 1) ? 'красное': 'черное'}`, 'number', [i]);
+  rules[i] = createRulesObject(`${i + 1} ${redNumbers.includes(i + 1) ? 'red' : 'black'}`, 'number', [i]);
 }
 
 for (let i = 0; i < 11; i++) {
@@ -76,9 +76,9 @@ for (let i = 0; i < 11; i++) {
   const splitSecond = [ix3 + 1, ix3 + 4];
   const splitThree = [ix3 + 2, ix3 + 5];
 
-  rules[splitFirst.join('-')] = createRulesObject('Сплит', 'split', splitFirst);
-  rules[splitSecond.join('-')] = createRulesObject('Сплит', 'split', splitSecond);
-  rules[splitThree.join('-')] = createRulesObject('Сплит', 'split', splitThree);
+  rules[splitFirst.join('-')] = createRulesObject('Split', 'split', splitFirst);
+  rules[splitSecond.join('-')] = createRulesObject('Split', 'split', splitSecond);
+  rules[splitThree.join('-')] = createRulesObject('Split', 'split', splitThree);
 }
 
 for (let i = 0; i < 12; i++) {
@@ -87,20 +87,20 @@ for (let i = 0; i < 12; i++) {
   const splitFirst = [ix3, ix3 + 1];
   const splitSecond = [ix3 + 1, ix3 + 2];
 
-  rules[splitFirst.join('-')] = createRulesObject('Сплит', 'split', splitFirst);
-  rules[splitSecond.join('-')] = createRulesObject('Сплит', 'split', splitSecond);
+  rules[splitFirst.join('-')] = createRulesObject('Split', 'split', splitFirst);
+  rules[splitSecond.join('-')] = createRulesObject('Split', 'split', splitSecond);
 }
 
 for (let i = 51; i < 63; i++) {
   const j = i - 51;
   const jx3 = j * 3;
 
-  rules[i] = createRulesObject('Стрит', 'straight', [jx3, jx3 + 1, jx3 + 2]);
+  rules[i] = createRulesObject('Straight', 'straight', [jx3, jx3 + 1, jx3 + 2]);
 
   if (i !== 62) {
     const nextJ = (i - 50) * 3;
 
-    rules[`${i}-${i + 1}`] = createRulesObject('6 номеров', 'six-numbers', [jx3, jx3 + 1, jx3 + 2, nextJ, nextJ + 1, nextJ + 2]);
+    rules[`${i}-${i + 1}`] = createRulesObject('6 rooms', 'six-numbers', [jx3, jx3 + 1, jx3 + 2, nextJ, nextJ + 1, nextJ + 2]);
   }
 }
 
